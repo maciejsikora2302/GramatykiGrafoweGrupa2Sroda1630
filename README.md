@@ -1,0 +1,1 @@
+# GramatykiGrafoweGrupa2Sroda1630
