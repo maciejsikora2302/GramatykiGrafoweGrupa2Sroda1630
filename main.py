@@ -115,13 +115,10 @@ def p1(graph: nx.Graph, level: int):
     left_production_side_graph.add_nodes_from([
         (parent_tmp_node_number, dict(label='El', x=None, y=None, level=0))
     ])
-    # pp(f"Initial left graph: {type(left_production_side_graph)}")
 
-    n = len(graph.nodes)
-
-    right_side_parent_node = (parent_tmp_node_number, dict(label='el', x=None, y=None, level=level)) # only new node is here!
+    right_side_parent_node = (parent_tmp_node_number, dict(label='el', x=None, y=None, level=level))
     right_side_nodes_new = [
-        (1, dict(label='I', x=None, y=None, level=1)), # others have to be generated!
+        (1, dict(label='I', x=None, y=None, level=1)),
         (2, dict(label='I', x=None, y=None, level=1)),
         (3, dict(label='E', x=4.0, y=4.0, level=1)),
         (4, dict(label='E', x=5.0, y=5.0, level=1)),
@@ -243,9 +240,10 @@ if __name__ == '__main__':
     draw(graph, filename='after_1.png')
     p2(graph, 1)
     draw(graph, filename='after_2.png')
-    # p2(graph, 1)
-    # draw(graph, filename='after_2.png')
-    # p2(graph, 1)
+    p2(graph, 1)
+    draw(graph, filename='after_3.png')
+    p2(graph, 1)
+    draw(graph, filename='after_4.png')
 
 
 # [A,B,C,D,E]
