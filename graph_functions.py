@@ -1,6 +1,8 @@
 import networkx as nx
 import typing
-from general_utils import Attribute
+import numpy as np
+from general_utils import Attribute, draw
+from pprint import pprint as pp
 
 def find_parents(graph: nx.Graph, level: int, label: str) -> list:
     parents = []
@@ -11,7 +13,6 @@ def find_parents(graph: nx.Graph, level: int, label: str) -> list:
 
 def node_comparator(found_node, searched_node) -> bool:
     return found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
-    # return found_node[Attribute.LEVEL] == searched_node[Attribute.LEVEL] and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
 
 def node_comparator_factory(level: int) -> typing.Callable:
     def node_comparator(found_node, searched_node) -> bool:
@@ -27,8 +28,46 @@ def find_isomporphic(graph: nx.Graph, left_side_graph: nx.Graph, level: int) -> 
         isomorphic_graphs.append(isomorphic_graph)
     return isomorphic_graphs
 
-def find_isomporphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: int) -> dict:
-    return find_isomporphic(graph, left_side_graph, level)
+def find_isomporphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: int, constraints: list = None) -> dict:
+    '''
+    constraints refer to node in left_side_graph.
+    Example constraints:
+        [{
+            'first_node': 1,
+            'second_node': 2,
+            'constrained_middle_node': 3
+        }]
+    
+    x of 'constrained_middle_node' == (x of 'first_node' + x of 'second_node') / 2
+    y of 'constrained_middle_node' == (y of 'first_node' + y of 'second_node') / 2
+    '''
+    def predicate(mapping):
+        eps = 1e-4
+
+        cheked_constraints = [False for _ in range(len(constraints))]
+
+        for i, constraint in enumerate(constraints):
+            first_node = graph.nodes[mapping[constraint['first_node']]]
+            second_node = graph.nodes[mapping[constraint['second_node']]]
+            expected_node = graph.nodes[constraint['constrained_middle_node']]
+            x1, y1 = first_node[Attribute.X], first_node[Attribute.Y]
+            x2, y2 = second_node[Attribute.X], second_node[Attribute.Y]
+            x3, y3 = expected_node[Attribute.X], expected_node[Attribute.Y]
+            if (np.abs((x1 + x2) / 2 - x3) < eps and np.abs((y1 + y2) / 2 - y3) < eps):
+                cheked_constraints[i] = True
+
+        # pp(cheked_constraints)
+        return all(cheked_constraints)
+
+
+    initially_found = find_isomporphic(graph, left_side_graph, level)
+
+    #modify later here to add ability to choose which mapping to use
+    try:
+        return initially_found[0] if constraints is None else list(filter(predicate, initially_found))[0]
+    except IndexError as e:
+        print('No isomorphic graph found')
+        raise e
 
 def add_to_graph(
     graph: nx.Graph, 

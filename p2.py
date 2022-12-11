@@ -21,14 +21,8 @@ def p2(graph: nx.Graph, level: int) -> None:
         (2, 3)
     ])
 
-    try:
-        isomorphic_mapping = find_isomporphic_wrapper(graph, left_production_side_graph, level=level)
-        isomorphic_mapping = isomorphic_mapping[0]
-    except IndexError:
-        print('No isomorphic mapping found for p2')
-        return
+    isomorphic_mapping = find_isomporphic_wrapper(graph, left_production_side_graph, level=level)
 
-    
     X = []
     Y = []
     for node in isomorphic_mapping.keys():
@@ -43,7 +37,7 @@ def p2(graph: nx.Graph, level: int) -> None:
 
     right_side_parent_node = (parent_tmp_node_number, dict(label='i'))
     right_side_nodes_new = [
-        (1, dict(label='I', x=(X[0] + X[1] + X[2]) / 3, y=(Y[0] + Y[1] + Y[2]) / 3)), # others have to be generated!
+        (1, dict(label='I', x=(X[0] + X[1] + X[2]) / 3, y=(Y[0] + Y[1] + Y[2]) / 3)),
         (2, dict(label='I', x=(X[1] + X[2] + X[3]) / 3, y=(Y[1] + Y[2] + Y[3]) / 3)),
         (3, dict(label='E', x=X[0], y=Y[0])),
         (4, dict(label='E', x=X[1], y=Y[1])),

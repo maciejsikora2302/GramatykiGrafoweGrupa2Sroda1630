@@ -12,7 +12,6 @@ def p1(graph: nx.Graph, level: int):
     high = 40.0
     low = 1.0
 
-
     right_side_parent_node = (parent_tmp_node_number, dict(label='el', x=None, y=None, level=level))
     right_side_nodes_new = [
         (1, dict(label='I', x=(2*low+high)/3, y=(2*low+high)/3, level=1)),
@@ -33,9 +32,5 @@ def p1(graph: nx.Graph, level: int):
     right_production_side.add_nodes_from(right_side_nodes)
     right_production_side.add_edges_from(right_side_edges)
 
-    try:
-        isomorphic_mapping = find_isomporphic_wrapper(graph, left_production_side_graph, level)[0]
-    except IndexError:
-        print('No isomorphic mapping found for p1')
-        return
+    isomorphic_mapping = find_isomporphic_wrapper(graph, left_production_side_graph, level)
     add_to_graph(graph, isomorphic_mapping, right_side_parent_node, right_side_nodes_new, right_side_edges)

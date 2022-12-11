@@ -26,12 +26,13 @@ import networkx as nx
 from pprint import pprint as pp
 from p1 import p1
 from p2 import p2
+from p3 import p3, p3_test
 from general_utils import draw, save_graph
 
 
 if __name__ == '__main__':
     graph = nx.Graph()
-    graph.add_node(0, label='El', x=1.0, y=1.0, level=0)
+    graph.add_node(0, label='El', x=-10.0, y=-10.0, level=0)
 
     draw(graph, filename='./dev_draw/before.png')
     p1(graph, 0)
@@ -41,5 +42,6 @@ if __name__ == '__main__':
     p2(graph, 1)
     draw(graph, filename='./dev_draw/after_3.png')
 
-    # save graph to file as csv
     save_graph(graph, 'saved_graphs/graph.gexf')
+
+    # p3_test()
