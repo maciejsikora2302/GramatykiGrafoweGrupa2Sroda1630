@@ -35,13 +35,16 @@ class Attribute:
     Y = 'y'
 
 
-def draw(graph: nx.Graph, filename: str='test_draw.png') -> None:
+def draw(graph: nx.Graph, level: int = None, filename: str='test_draw.png') -> None:
+    if level is not None:
+        graph = graph.subgraph([node for node in graph.nodes if graph.nodes[node][Attribute.LEVEL] == level])
+    
     pos = nx.spring_layout(graph)
 
     pos_labels = copy(pos)
     for node in graph.nodes():
         pos_labels[node] = (pos[node][0], pos[node][1] + 0.3)
-    
+
     label_attr = nx.get_node_attributes(graph, Attribute.LABEL)
     xs = nx.get_node_attributes(graph, Attribute.X)
     ys = nx.get_node_attributes(graph, Attribute.Y)
@@ -49,7 +52,6 @@ def draw(graph: nx.Graph, filename: str='test_draw.png') -> None:
     red_labels = ['El', 'el']
     blue_labels = ['E', 'e']
     yellow_labels = ['I', 'i']
-
 
     node_colors = []
     for node in graph.nodes():
@@ -85,7 +87,8 @@ def find_parents(graph: nx.Graph, level: int, label: str) -> list:
     return parents
 
 def node_comparator(found_node, searched_node) -> bool:
-    return found_node[Attribute.LEVEL] == searched_node[Attribute.LEVEL] and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
+    return found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
+    # return found_node[Attribute.LEVEL] == searched_node[Attribute.LEVEL] and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
 
 
 def find_isomporphic(graph: nx.Graph, left_side_graph: nx.Graph) -> dict:
@@ -172,49 +175,60 @@ def p1(graph: nx.Graph):
         print(graph.nodes[node][Attribute.LABEL])
 
 
+def p2(graph: nx.Graph) -> None:
+    left_production_side_graph = nx.Graph()
+
+    parent_tmp_node_number = 8
+    left_production_side_graph.add_nodes_from([
+        (parent_tmp_node_number, dict(label='I', x=None, y=None, level=None))
+        (1, dict(label='E', x=None, y=None, level=None)),
+        (2, dict(label='E', x=None, y=None, level=None)),
+        (3, dict(label='E', x=None, y=None, level=None)),
+    ])
+    left_production_side_graph.add_edges_from([
+        (parent_tmp_node_number, 1),
+        (parent_tmp_node_number, 2),
+        (parent_tmp_node_number, 3),
+        (1, 2),
+        (1, 3),
+        (2, 3)
+    ])
+
+    pp(f"Initial left graph: {left_production_side_graph}")
+
+    draw(left_production_side_graph, 'left_production_side_graph.png')
+    # n = len(graph.nodes)
+
+    # right_side_parent_node = (parent_tmp_node_number, dict(label='el', x=1.0, y=1.0, level=0)) # only new node is here!
+    # right_side_nodes_new = [
+    #     (1, dict(label='I', x=None, y=None, level=None)), # others have to be generated!
+    #     (2, dict(label='I', x=None, y=None, level=None)),
+    #     (3, dict(label='E', x=None, y=None, level=None)),
+    #     (4, dict(label='E', x=None, y=None, level=None)),
+    #     (5, dict(label='E', x=None, y=None, level=None)),
+    #     (6, dict(label='E', x=None, y=None, level=None))
+    # ]
+
+    # right_side_nodes = [right_side_parent_node] + right_side_nodes_new
+
+    # right_side_edges = [
+    #     (3,4), (3,6), (3,1), (4,5), (4,6), (4,1), (4,2), (5,2), (5,6), (6,1), (6,2), (parent_tmp_node_number,1), (parent_tmp_node_number,2),
+    # ]
+
+    # right_production_side = nx.Graph()
+    # right_production_side.add_nodes_from(right_side_nodes)
+    # right_production_side.add_edges_from(right_side_edges)
+
+
 if __name__ == '__main__':
     graph = nx.Graph()
     graph.add_node(0, label='El', x=1.0, y=1.0, level=0)
 
     draw(graph, 'before.png')
-
     p1(graph)
-
-    draw(graph, 'after.png')
-
-    # initial_graph.add_node(1, label='I', x=2.0, y=1.0, level=0)
-    # initial_graph.add_node(2, label='I', x=3.0, y=1.0, level=0)
-    
-    # initial_graph.add_node(3, label='E', x=4.0, y=1.0, level=0)
-    # initial_graph.add_node(4, label='E', x=5.0, y=1.0, level=0)
-    # initial_graph.add_node(5, label='E', x=5.0, y=1.0, level=0)
-    # initial_graph.add_node(6, label='E', x=5.0, y=1.0, level=0)
-
-    # initial_graph.add_edge(3,4)
-    # initial_graph.add_edge(3,6)
-    # initial_graph.add_edge(3,1)
-    # initial_graph.add_edge(4,5)
-    # initial_graph.add_edge(4,6)
-    # initial_graph.add_edge(4,1)
-    # initial_graph.add_edge(4,2)
-    # initial_graph.add_edge(5,2)
-    # initial_graph.add_edge(5,6)
-    # initial_graph.add_edge(6,1)
-    # initial_graph.add_edge(6,2)
-    # initial_graph.add_edge(0,1)
-    # initial_graph.add_edge(0,2)
-
-    # draw(initial_graph)
-    
-    # test_graph = nx.Graph()
-    # test_graph.add_node(0, label='el', x=1.0, y=1.0, level=0)
-
-    # test_nodes = find_isomporphic(initial_graph, test_graph)
-
-    # print(f"Found {len(test_nodes)} isomorphic graphs.")
-    # print(f"Isomorphic graphs: {test_nodes}")
-
-    # print('Gonna be fun!')
+    draw(graph, 'after_1.png')
+    p2(graph)
+    # draw(graph, 'after_2.png')
 
 
 # [A,B,C,D,E]
