@@ -28,7 +28,7 @@ def find_isomporphic(graph: nx.Graph, left_side_graph: nx.Graph, level: int) -> 
         isomorphic_graphs.append(isomorphic_graph)
     return isomorphic_graphs
 
-def find_isomporphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: int, constraints: list = None) -> dict:
+def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: int, constraints: list = None) -> dict:
     '''
     constraints refer to node in left_side_graph.
     Example constraints:
@@ -44,7 +44,7 @@ def find_isomporphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: 
     def predicate(mapping):
         eps = 1e-4
 
-        cheked_constraints = [False for _ in range(len(constraints))]
+        checked_constraints = [False for _ in range(len(constraints))]
 
         for i, constraint in enumerate(constraints):
             first_node = graph.nodes[mapping[constraint['first_node']]]
@@ -54,10 +54,10 @@ def find_isomporphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: 
             x2, y2 = second_node[Attribute.X], second_node[Attribute.Y]
             x3, y3 = expected_node[Attribute.X], expected_node[Attribute.Y]
             if (np.abs((x1 + x2) / 2 - x3) < eps and np.abs((y1 + y2) / 2 - y3) < eps):
-                cheked_constraints[i] = True
+                checked_constraints[i] = True
 
-        # pp(cheked_constraints)
-        return all(cheked_constraints)
+        # pp(checked_constraints)
+        return all(checked_constraints)
 
 
     initially_found = find_isomporphic(graph, left_side_graph, level)
