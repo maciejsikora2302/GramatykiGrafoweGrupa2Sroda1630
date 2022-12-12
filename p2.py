@@ -25,7 +25,7 @@ def p2(graph: nx.Graph, level: int) -> None:
 
     X = []
     Y = []
-    for node in isomorphic_mapping.keys():
+    for _, node in isomorphic_mapping.items():
         if graph.nodes[node][Attribute.LABEL] == 'E':
             X.append(graph.nodes[node][Attribute.X])
             Y.append(graph.nodes[node][Attribute.Y])
