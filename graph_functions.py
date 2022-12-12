@@ -25,7 +25,9 @@ def find_isomporphic(graph: nx.Graph, left_side_graph: nx.Graph, level: int) -> 
     isomorphic_graphs = []
     graph_matcher = nx.algorithms.isomorphism.GraphMatcher(graph, left_side_graph, node_match=node_comparator_factory(level))
     for isomorphic_graph in graph_matcher.subgraph_isomorphisms_iter():
-        isomorphic_graphs.append(isomorphic_graph)
+        # mapping should be directed from template to real graph:
+        inversed_isomorphism = {v: k for k, v in isomorphic_graph.items()}
+        isomorphic_graphs.append(inversed_isomorphism)
     return isomorphic_graphs
 
 def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: int, constraints: list = None) -> dict:
@@ -49,7 +51,7 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
         for i, constraint in enumerate(constraints):
             first_node = graph.nodes[mapping[constraint['first_node']]]
             second_node = graph.nodes[mapping[constraint['second_node']]]
-            expected_node = graph.nodes[constraint['constrained_middle_node']]
+            expected_node = graph.nodes[mapping[constraint['constrained_middle_node']]]
             x1, y1 = first_node[Attribute.X], first_node[Attribute.Y]
             x2, y2 = second_node[Attribute.X], second_node[Attribute.Y]
             x3, y3 = expected_node[Attribute.X], expected_node[Attribute.Y]
@@ -78,12 +80,9 @@ def add_to_graph(
     ):
     parent_tmp_node_number = right_side_parent_node[0]
 
-    isomorphic_mapping_reverse = {v: k for k, v in isomorphic_mapping.items()}
-
     n = len(graph.nodes)
     right_side_nodes_mapping = { node[0]: node[0] + n for node in right_side_nodes_new } # define a dictionay mapping old node number (based on right_side_nodes ) => graph node.
-    right_side_nodes_mapping[parent_tmp_node_number] = isomorphic_mapping_reverse[parent_tmp_node_number]
-        
+    right_side_nodes_mapping[parent_tmp_node_number] = isomorphic_mapping[parent_tmp_node_number]
 
     right_side_edges_mapped = list(
         map(lambda edge: (right_side_nodes_mapping[edge[0]], right_side_nodes_mapping[edge[1]]), right_side_edges))
@@ -91,12 +90,12 @@ def add_to_graph(
     right_side_nodes_mapped = list(
         map(lambda node: (right_side_nodes_mapping[node[0]], node[1]), right_side_nodes_new))
     
-    existing_node_parent = graph.nodes[isomorphic_mapping_reverse[parent_tmp_node_number]]
+    existing_node_parent = graph.nodes[isomorphic_mapping[parent_tmp_node_number]]
 
     for node in right_side_nodes_mapped:
         node[1][Attribute.LEVEL] = existing_node_parent[Attribute.LEVEL] + 1
 
-    graph.nodes[isomorphic_mapping_reverse[parent_tmp_node_number]][Attribute.LABEL] = right_side_parent_node[1][Attribute.LABEL]
+    graph.nodes[isomorphic_mapping[parent_tmp_node_number]][Attribute.LABEL] = right_side_parent_node[1][Attribute.LABEL]
 
     graph.add_nodes_from(right_side_nodes_mapped)
     graph.add_edges_from(right_side_edges_mapped)
