@@ -2,6 +2,7 @@ import unittest
 import networkx as nx
 
 from p3 import p3
+from p4 import p4
 
 class P3_Test(unittest.TestCase):
     def setUp(self):
@@ -119,6 +120,21 @@ class P3_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges) + (11 + 2) * 2)
         self.assertEqual(G.nodes[6]['label'], 'i')
         self.assertEqual(G.nodes[7]['label'], 'i')
+
+class P4_Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_should_do_nothing_when_no_isomorphic_subgraph_found(self):
+        pass
+
+    def test_should_split_one_trianle_when_isomorphic_subgraph_found(self):
+        pass
+
+    def test_should_split_exactly_one_triangle_in_each_call(self):
+        pass
+
+
 
 if __name__ == '__main__':
     unittest.main()
