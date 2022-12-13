@@ -48,7 +48,7 @@ def p2(graph: nx.Graph, level: int) -> None:
     right_side_nodes = [right_side_parent_node] + right_side_nodes_new
 
     right_side_edges = [
-        (3,4), (3,6), (3,1), (4,5), (4,6), (4,1), (4,2), (5,2), (5,6), (6,1), (6,2), (parent_tmp_node_number,1), (parent_tmp_node_number,2),
+        (3,4), (3,6), (3,1), (4,5), (4,6), (4,1), (4,2), (5,2), (5,6), (6,1), (6,2),
     ]
 
     right_production_side = nx.Graph()
