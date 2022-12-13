@@ -1,69 +1,63 @@
 import networkx as nx
 from graph_functions import *
 from general_utils import Attribute
-from pprint import pprint as pp
 
-def p3(graph: nx.Graph, level: int, test: bool = None) -> None:
-    left_production_side_graph = nx.Graph()
+def p3(graph: nx.Graph, level: int) -> None:
+    left_side_graph = nx.Graph()
 
-    parent_tmp_node_number = 0
-    left_production_side_graph.add_nodes_from([
-        (parent_tmp_node_number, dict(label='I')),
+    # parent I node (from the upper level) idx = 0
+    left_side_graph.add_nodes_from([
+        (0, dict(label='I')),
         (1, dict(label='E')),
         (2, dict(label='E')),
         (3, dict(label='E')),
         (4, dict(label='E'))
     ])
-    left_production_side_graph.add_edges_from([
-        (parent_tmp_node_number, 1),
-        (parent_tmp_node_number, 2),
-        (parent_tmp_node_number, 3),
+    left_side_graph.add_edges_from([
+        (0, 1),
+        (0, 2),
+        (0, 3),
         (1, 2),
         (2, 3),
         (3, 4),
-        (1, 4)
+        (4, 1)
     ])
 
-    # draw(left_production_side_graph)
-
     constraints = [
-        {'first_node': 1, 'second_node': 3, 'constrained_middle_node': 4},
+        {'first_node': 1, 'second_node': 3, 'constrained_middle_node': 4}
     ]
 
     try:
-        isomorphic_mapping = find_isomorphic_wrapper(graph, left_production_side_graph, level=level, constraints=constraints)
-        if test:
-            pp(isomorphic_mapping)
-            return len(isomorphic_mapping)
-        isomorphic_mapping = isomorphic_mapping[0]
-    except IndexError:
-        print('No isomorphic mapping found for p3')
+        isomorphic_mapping = find_isomorphic_wrapper(graph, left_side_graph, level=level, constraints=constraints)
+    except Exception:
         return
 
-def p3_test():
-    
-    low = 1.0
-    high = 40.0
+    right_side_parent_node = (0, dict(label='i', x=None, y=None, level=level))
 
-    g = nx.Graph()
+    # lists are indexed by nodes in template, so (1,2,3,4), minus 1 to start from 0
+    X = [0] * 4
+    Y = [0] * 4
+    for t_node, g_node in isomorphic_mapping.items():
+        if graph.nodes[g_node][Attribute.LABEL] == 'E':
+            X[t_node - 1] = graph.nodes[g_node][Attribute.X]
+            Y[t_node - 1] = graph.nodes[g_node][Attribute.Y]
 
-    parent_tmp_node_number = 0
-    g.add_nodes_from([
-        (parent_tmp_node_number, dict(label='I', x=1.0, y=1.0, level=1)),
-        (1, dict(label='E', x=low, y=low, level=1)),
-        (2, dict(label='E', x=high, y=low, level=1)),
-        (3, dict(label='E', x=high, y=high, level=1)),
-        (4, dict(label='E', x=(high+low)/2, y=(high+low)/2, level=1))
-    ])
-    g.add_edges_from([
-        (parent_tmp_node_number, 1),
-        (parent_tmp_node_number, 2),
-        (parent_tmp_node_number, 3),
-        (1, 2),
-        (2, 3),
-        (3, 4),
-        (1, 4)
-    ])
+    right_side_nodes_new = [
+        # copy existing E nodes
+        (1, dict(label='E', x=X[0], y=Y[0])),
+        (2, dict(label='E', x=X[1], y=Y[1])),
+        (3, dict(label='E', x=X[2], y=Y[2])),
+        (4, dict(label='E', x=X[3], y=Y[3])),
+        # add new internal I nodes
+        (5, dict(label='I', x=(X[0]+X[1]+X[3])/3, y=(Y[0]+Y[1]+Y[3])/3)),
+        (6, dict(label='I', x=(X[1]+X[2]+X[3])/3, y=(Y[1]+Y[2]+Y[3])/3))
+    ]
 
-    if p3(g, 1, test=True) == 2:
-        print('p3 test passed')
+    right_side_edges = [
+        (1,2), (2,3), (3,4), (4,1), # boundary edges
+        (2,4), # new interal edge
+        (1,5), (2,5), (4,5), # hiperedges of <1,2,4> triangle
+        (2,6), (3,6), (4,6)  # hiperedges of <2,3,4> triangle
+    ]
+
+    add_to_graph(graph, isomorphic_mapping, right_side_parent_node, right_side_nodes_new, right_side_edges)
