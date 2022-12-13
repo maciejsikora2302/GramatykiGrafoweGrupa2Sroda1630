@@ -31,7 +31,7 @@ def p3(graph: nx.Graph, level: int, test: bool = None) -> None:
     ]
 
     try:
-        isomorphic_mapping = find_isomporphic_wrapper(graph, left_production_side_graph, level=level, constraints=constraints)
+        isomorphic_mapping = find_isomorphic_wrapper(graph, left_production_side_graph, level=level, constraints=constraints)
         if test:
             pp(isomorphic_mapping)
             return len(isomorphic_mapping)

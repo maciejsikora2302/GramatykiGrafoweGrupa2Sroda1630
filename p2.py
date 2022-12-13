@@ -21,11 +21,11 @@ def p2(graph: nx.Graph, level: int) -> None:
         (2, 3)
     ])
 
-    isomorphic_mapping = find_isomporphic_wrapper(graph, left_production_side_graph, level=level)
+    isomorphic_mapping = find_isomorphic_wrapper(graph, left_production_side_graph, level=level)
 
     X = []
     Y = []
-    for node in isomorphic_mapping.keys():
+    for _, node in isomorphic_mapping.items():
         if graph.nodes[node][Attribute.LABEL] == 'E':
             X.append(graph.nodes[node][Attribute.X])
             Y.append(graph.nodes[node][Attribute.Y])
