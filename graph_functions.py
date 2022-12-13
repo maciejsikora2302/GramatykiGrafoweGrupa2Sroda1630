@@ -68,8 +68,7 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
     try:
         return initially_found[0] if constraints is None else list(filter(predicate, initially_found))[0]
     except IndexError as e:
-        print('No isomorphic graph found')
-        raise e
+        raise Exception('No isomorphic graph found')
 
 def add_to_graph(
     graph: nx.Graph, 

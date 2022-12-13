@@ -31,7 +31,7 @@ def p4(graph: nx.Graph, level: int) -> None:
 
     try:
         isomorphic_mapping = find_isomorphic_wrapper(graph, left_side_graph, level=level, constraints=constraints)
-    except IndexError:
+    except Exception:
         return
 
     right_side_parent_node = (0, dict(label='i', x=None, y=None, level=level))
