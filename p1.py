@@ -33,4 +33,8 @@ def p1(graph: nx.Graph, level: int):
     right_production_side.add_edges_from(right_side_edges)
 
     isomorphic_mapping = find_isomorphic_wrapper(graph, left_production_side_graph, level)
+
+    if not isomorphic_mapping:
+        return
+    
     add_to_graph(graph, isomorphic_mapping, right_side_parent_node, right_side_nodes_new, right_side_edges)

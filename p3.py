@@ -27,9 +27,9 @@ def p3(graph: nx.Graph, level: int) -> None:
         {'first_node': 1, 'second_node': 3, 'constrained_middle_node': 4}
     ]
 
-    try:
-        isomorphic_mapping = find_isomorphic_wrapper(graph, left_side_graph, level=level, constraints=constraints)
-    except Exception:
+    isomorphic_mapping = find_isomorphic_wrapper(graph, left_side_graph, level=level, constraints=constraints)
+
+    if not isomorphic_mapping:
         return
 
     right_side_parent_node = (0, dict(label='i', x=None, y=None, level=level))
