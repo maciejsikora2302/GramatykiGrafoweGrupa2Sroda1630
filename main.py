@@ -29,6 +29,7 @@ from general_utils import draw, save_graph
 from p1 import p1
 from p2 import p2
 from p3 import p3
+from p4 import p4
 
 if __name__ == '__main__':
     graph = nx.Graph()

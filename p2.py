@@ -23,6 +23,9 @@ def p2(graph: nx.Graph, level: int) -> None:
 
     isomorphic_mapping = find_isomorphic_wrapper(graph, left_production_side_graph, level=level)
 
+    if not isomorphic_mapping:
+        return
+
     X = []
     Y = []
     for _, node in isomorphic_mapping.items():
