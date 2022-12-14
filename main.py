@@ -24,11 +24,11 @@ Let's start with generating P1.
 
 import networkx as nx
 from pprint import pprint as pp
-from p1 import p1
-from p2 import p2
-from p3 import p3, p3_test
 from general_utils import draw, save_graph
 
+from p1 import p1
+from p2 import p2
+from p3 import p3
 
 if __name__ == '__main__':
     graph = nx.Graph()
@@ -43,5 +43,3 @@ if __name__ == '__main__':
     draw(graph, filename='./dev_draw/after_3.png')
 
     save_graph(graph, 'saved_graphs/graph.gexf')
-
-    # p3_test()

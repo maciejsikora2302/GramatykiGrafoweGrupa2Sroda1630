@@ -87,6 +87,13 @@ def add_to_graph(
     right_side_edges_mapped = list(
         map(lambda edge: (right_side_nodes_mapping[edge[0]], right_side_nodes_mapping[edge[1]]), right_side_edges))
 
+    right_size_edges_to_parent = [
+        (isomorphic_mapping[parent_tmp_node_number], right_side_nodes_mapping[node[0]])
+        for node in list(filter(lambda node: node[1][Attribute.LABEL] == 'I', right_side_nodes_new))
+    ]
+
+    right_side_edges_mapped = right_side_edges_mapped + right_size_edges_to_parent
+
     right_side_nodes_mapped = list(
         map(lambda node: (right_side_nodes_mapping[node[0]], node[1]), right_side_nodes_new))
     
