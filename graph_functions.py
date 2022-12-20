@@ -16,7 +16,8 @@ def node_comparator(found_node, searched_node) -> bool:
 
 def node_comparator_factory(level: int) -> typing.Callable:
     def node_comparator(found_node, searched_node) -> bool:
-        return found_node[Attribute.LEVEL] == level and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
+        desired_level = level + searched_node.get(Attribute.LEVEL, 0)
+        return found_node[Attribute.LEVEL] == desired_level and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
 
     return node_comparator
 
@@ -105,3 +106,15 @@ def add_to_graph(
 
     graph.add_nodes_from(right_side_nodes_mapped)
     graph.add_edges_from(right_side_edges_mapped)
+
+def merge_nodes(graph: nx.Graph, nodes: list, new_node: tuple):    
+    graph.add_node(new_node)
+    
+    for n1,n2,data in graph.edges(data=True):
+        if n1 in nodes:
+            graph.add_edge(new_node,n2,data)
+        elif n2 in nodes:
+            graph.add_edge(n1,new_node,data)
+    
+    for n in nodes:
+        graph.remove_node(n)
