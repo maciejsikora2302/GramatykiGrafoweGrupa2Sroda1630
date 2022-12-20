@@ -108,13 +108,13 @@ def add_to_graph(
     graph.add_edges_from(right_side_edges_mapped)
 
 def merge_nodes(graph: nx.Graph, nodes: list, new_node: tuple):    
-    graph.add_node(new_node)
+    graph.add_nodes_from([new_node])
     
-    for n1,n2,data in graph.edges(data=True):
+    for n1,n2 in graph.edges():
         if n1 in nodes:
-            graph.add_edge(new_node,n2,data)
+            graph.add_edge(new_node[0],n2)
         elif n2 in nodes:
-            graph.add_edge(n1,new_node,data)
+            graph.add_edge(n1,new_node[0])
     
     for n in nodes:
         graph.remove_node(n)
