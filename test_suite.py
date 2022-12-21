@@ -3,6 +3,7 @@ import networkx as nx
 
 from p3 import p3
 from p4 import p4
+from p5 import p5
 
 class P3_Test(unittest.TestCase):
     def setUp(self):
