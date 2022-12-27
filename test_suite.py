@@ -244,7 +244,6 @@ class P4_Test(unittest.TestCase):
         self.assertEqual(G.nodes[6]['label'], 'i')
         self.assertEqual(G.nodes[7]['label'], 'i')
 
-
 class P5_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -386,7 +385,6 @@ class P5_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges))
         self.assertEqual(G.nodes[7]['label'], 'I')
         self.assertEqual(G.nodes[9]['label'], 'I')
-
 
 class P6_Test(unittest.TestCase):
     def setUp(self):
