@@ -28,6 +28,8 @@ def p6(graph: nx.Graph, level: int) -> None:
         (1, 3),
         (0, 4),
         (0, 5),
+        (1, 9),
+        (1, 10),
         (4, 6),
         (4, 7),
         (5, 7),
@@ -44,7 +46,10 @@ def p6(graph: nx.Graph, level: int) -> None:
 
     constraints = [
         {'first_node': 6, 'second_node': 8, 'constrained_middle_node': 7},
-        {'first_node': 11, 'second_node': 13, 'constrained_middle_node': 12}
+        {'first_node': 11, 'second_node': 13, 'constrained_middle_node': 12},
+        {'node': 6, 'constrained_equal_node': 11},
+        {'node': 7, 'constrained_equal_node': 12},
+        {'node': 8, 'constrained_equal_node': 13},
     ]
 
     isomorphic_mapping = find_isomorphic_wrapper(graph, left_side_graph, level=level, constraints=constraints)
@@ -60,6 +65,6 @@ def p6(graph: nx.Graph, level: int) -> None:
         Y[t_node - 1] = graph.nodes[g_node][Attribute.Y]
         levels[t_node - 1] = graph.nodes[g_node][Attribute.LEVEL]
 
-    merge_nodes(graph, [isomorphic_mapping[6], isomorphic_mapping[11]], (14, dict(label='E', x=X[6], y=Y[6], level=levels[6])))
-    merge_nodes(graph, [isomorphic_mapping[7], isomorphic_mapping[12]], (15, dict(label='E', x=X[6], y=Y[6], level=levels[6])))
-    merge_nodes(graph, [isomorphic_mapping[8], isomorphic_mapping[13]], (16, dict(label='E', x=X[6], y=Y[6], level=levels[6])))
+    merge_nodes(graph, [isomorphic_mapping[6], isomorphic_mapping[11]], (6, dict(label='E', x=X[6], y=Y[6], level=levels[6])))
+    merge_nodes(graph, [isomorphic_mapping[7], isomorphic_mapping[12]], (7, dict(label='E', x=X[7], y=Y[7], level=levels[7])))
+    merge_nodes(graph, [isomorphic_mapping[8], isomorphic_mapping[13]], (8, dict(label='E', x=X[8], y=Y[8], level=levels[8])))
