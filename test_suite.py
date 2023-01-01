@@ -1,6 +1,7 @@
 import unittest
 import networkx as nx
 
+from parameterized import parameterized
 
 from p1 import p1
 from p2 import p2
@@ -20,7 +21,7 @@ class P1_Test(unittest.TestCase):
             (1, dict(label='El', x=1.0, y=1.0, level=level))
         ]
         edges = [
-            
+
         ]
 
         G = nx.Graph()
@@ -58,7 +59,7 @@ class P1_Test(unittest.TestCase):
         self.assertEqual(G.nodes[6]['y'], HIGH)
         self.assertEqual(G.nodes[7]['x'], LOW)
         self.assertEqual(G.nodes[7]['y'], HIGH)
-      
+
     def test_should_add_starting_graph_when_multiple_starting_points_are_avaiable(self):
         # given
         level = 0
@@ -107,10 +108,6 @@ class P1_Test(unittest.TestCase):
         self.assertEqual(G.nodes[7]['y'], HIGH)
         self.assertEqual(G.nodes[8]['x'], LOW)
         self.assertEqual(G.nodes[8]['y'], HIGH)
-
-
-    #więcej niż jeden wierzchołek
-
 
 class P2_Test(unittest.TestCase):
     def setUp(self):
@@ -179,42 +176,61 @@ class P2_Test(unittest.TestCase):
         self.assertEqual(G.nodes[10]['y'], 2/3)
         self.assertEqual(G.nodes[11]['x'], 1/3)
         self.assertEqual(G.nodes[11]['y'], 1/2)
-        
 
-    def test_should_do_notihng_when_no_isomorphinc_subgraph_found(self):
+    def base_p2_isomorphic_graph(self):
         # given
         level = 2
 
         nodes = [
             (1, dict(label='E', x=0.0, y=1.0, level=level)),
             (2, dict(label='E', x=1.0, y=1.0, level=level)),
-            (3, dict(label='E', x=1.0, y=0.0, level=level)),
-            (4, dict(label='E', x=0.0, y=0.0, level=level))
+            (4, dict(label='E', x=0.0, y=0.0, level=level)),
+            (5, dict(label='I', x=1/3, y=2/3, level=level)),
+            (6, dict(label='I', x=2/3, y=1/3, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), 
-            (2,4), 
-            (1,4),
+            (1,2), (4,1), # boundary edges
+            (2,4), # internal edge
+            (1,5), (2,5), (4,5), # internal I node of triangle <1,2,4>
         ]
 
         G = nx.Graph()
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
 
-        # print(G)
+        return G
+
+    def test_should_apply_p2_to_base_p2_isomorphic_graph(self):
+        # given
+        G = self.base_p2_isomorphic_graph()
+        # G.remove_node(3)
+        level = 2
+
         # when
-        p2(G, level)
+        G_copy = G.copy()
+        p2(G_copy, level)
 
         # then
-        self.assertEqual(len(G.nodes), len(nodes))
-        self.assertEqual(len(G.edges), len(edges))
+        self.assertNotEqual(G_copy.nodes, G.nodes)
+        self.assertNotEqual(G_copy.edges, G.edges)
 
-        # check labels
-        self.assertEqual(G.nodes[1]['label'], 'E')
-        self.assertEqual(G.nodes[2]['label'], 'E')
-        self.assertEqual(G.nodes[3]['label'], 'E')
-        self.assertEqual(G.nodes[4]['label'], 'E')
-        
+    @parameterized.expand([
+        ['1', 1], ['2', 2], ['4', 4], ['5', 5]
+    ])
+    def test_should_do_nothing_when_no_isomorphic_subgraph_found(self, _test_name: str, node_to_remove: int):
+        # given
+        G = self.base_p2_isomorphic_graph()
+        G.remove_node(node_to_remove)
+        level = 2
+
+        # when
+        G_copy = G.copy()
+        p2(G_copy, level)
+
+        # then
+        self.assertEqual(G_copy.nodes, G.nodes)
+        self.assertEqual(G_copy.edges, G.edges)
+
 
 class P3_Test(unittest.TestCase):
     def setUp(self):
@@ -403,7 +419,7 @@ class P4_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges) + 16 + 3)
         self.assertEqual(G.nodes[6]['label'], 'I')
         self.assertEqual(G.nodes[7]['label'], 'i')
-    
+
     def test_should_split_exactly_one_triangle_in_each_call(self):
         # given
         level = 2
