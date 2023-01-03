@@ -301,6 +301,7 @@ class P3_Test(unittest.TestCase):
         self.assertEqual(G.nodes[6]['label'], 'I')
         self.assertEqual(G.nodes[7]['label'], 'i')
 
+
     def test_should_split_exactly_one_triangle_in_each_call(self):
         # given
         level = 2
@@ -348,6 +349,78 @@ class P3_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges) + (11 + 2) * 2)
         self.assertEqual(G.nodes[6]['label'], 'i')
         self.assertEqual(G.nodes[7]['label'], 'i')
+
+    @parameterized.expand([
+        # name removed-nodes removed-edges (changed-node new-xy new-level)
+        ("I-nodes removed", [6, 7], [], None),
+        ("E-node removed", [2], [], None),
+        ("E-node removed", [3], [], None),
+        ("E-node removed", [4], [], None),
+        ("E-node removed", [5], [], None),
+        ("boundary edge removed", [], [(2,3)], None),
+        ("internal edge removed", [], [(2,5)], None),
+        ("internal I edges removed", [], [(1,6), (4,7)], None),
+        ("changed level of a node", [], [], (5, None, 1)),
+        ("changed position of a broken node", [], [], (3, (1.0, 0.4), None)),
+    ])
+    def test_should_do_nothing_when_isomorphic_subgraph_is_broken(self, _name, removed_nodes, removed_edges, update):
+        # given
+        level = 2
+
+        nodes = [
+            (1, dict(label='E', x=0.0, y=1.0, level=level)),
+            (2, dict(label='E', x=1.0, y=1.0, level=level)),
+            (3, dict(label='E', x=1.0, y=0.5, level=level)),
+            (4, dict(label='E', x=1.0, y=0.0, level=level)),
+            (5, dict(label='E', x=0.0, y=0.0, level=level)),
+            (6, dict(label='I', x=1/3, y=2/3, level=level)),
+            (7, dict(label='I', x=2/3, y=1/3, level=level))
+        ]
+        edges = [
+            (1,2), (2,3), (3,4), (4,5), (5,1), # boundary edges
+            (2,5), # internal edge
+            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
+            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+
+        for removed_node in removed_nodes:
+            G.remove_node(removed_node)
+            nodes = list(filter(lambda n: n[0] != removed_node, nodes))
+            edges = list(filter(lambda e: removed_node not in e, edges))
+
+        for removed_edge in removed_edges:
+            G.remove_edge(*removed_edge)
+            edges.remove(removed_edge)
+
+        if update:
+            idx, new_xy, new_level = update
+            if new_xy:
+                x, y = new_xy
+                attrs = nx.get_node_attributes(G, "x")
+                attrs[idx] = x
+                nx.set_node_attributes(G, attrs, "x")
+                attrs = nx.get_node_attributes(G, "y")
+                attrs[idx] = y
+                nx.set_node_attributes(G, attrs, "y")
+            if new_level:
+                attrs = nx.get_node_attributes(G, "level")
+                attrs[idx] = new_level
+                nx.set_node_attributes(G, attrs, "level")
+
+        # when
+        p3(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), len(nodes))
+        self.assertEqual(len(G.edges), len(edges))
+
+        I_node_count = sum(map(lambda n: n[1]['label'] == 'I', nodes))
+        self.assertTrue(I_node_count in (0, 2)) # we either removed all of the I-nodes or they were unchanged
+        self.assertTrue(all(map(lambda n: n[1]['label'] in ('E', 'I'), G.nodes(data=True)))) # The labels shouldn't change
 
 class P4_Test(unittest.TestCase):
     def setUp(self):
@@ -469,6 +542,82 @@ class P4_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges) + (16 + 3) * 2)
         self.assertEqual(G.nodes[6]['label'], 'i')
         self.assertEqual(G.nodes[7]['label'], 'i')
+
+    @parameterized.expand([
+        # name removed-nodes removed-edges (changed-node new-xy new-level)
+        ("I-nodes removed", [6, 7], [], None),
+        ("E-node removed", [2], [], None),
+        ("E-node removed", [3], [], None),
+        ("E-node removed", [4], [], None),
+        ("E-node removed", [5], [], None),
+        ("E-node removed", [8], [], None),
+        ("boundary edge removed", [], [(2,3)], None),
+        ("internal edge removed", [], [(2,8)], None),
+        ("internal I edges removed", [], [(1,6), (4,7)], None),
+        ("changed level of a node", [], [], (8, None, 1)),
+        ("changed position of a broken node", [], [], (3, (1.0, 0.4), None)),
+        ("changed position of a broken node", [], [], (8, (0.4, 0.5), None)),
+    ])
+    def test_should_do_nothing_when_isomorphic_subgraph_is_broken(self, _name, removed_nodes, removed_edges, update):
+        # given
+        level = 2
+
+        nodes = [
+            (1, dict(label='E', x=0.0, y=1.0, level=level)),
+            (2, dict(label='E', x=1.0, y=1.0, level=level)),
+            (3, dict(label='E', x=1.0, y=0.5, level=level)),
+            (4, dict(label='E', x=1.0, y=0.0, level=level)),
+            (5, dict(label='E', x=0.0, y=0.0, level=level)),
+            (6, dict(label='I', x=1/3, y=2/3, level=level)),
+            (7, dict(label='I', x=2/3, y=1/3, level=level)),
+            (8, dict(label='E', x=0.5, y=0.5, level=level))
+        ]
+        edges = [
+            (1,2), (2,3), (3,4), (4,5), (5,1), # boundary edges
+            (2,8), (8,5), # internal edges
+            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
+            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+
+
+        for removed_node in removed_nodes:
+            G.remove_node(removed_node)
+            nodes = list(filter(lambda n: n[0] != removed_node, nodes))
+            edges = list(filter(lambda e: removed_node not in e, edges))
+
+        for removed_edge in removed_edges:
+            G.remove_edge(*removed_edge)
+            edges.remove(removed_edge)
+
+        if update:
+            idx, new_xy, new_level = update
+            if new_xy:
+                x, y = new_xy
+                attrs = nx.get_node_attributes(G, "x")
+                attrs[idx] = x
+                nx.set_node_attributes(G, attrs, "x")
+                attrs = nx.get_node_attributes(G, "y")
+                attrs[idx] = y
+                nx.set_node_attributes(G, attrs, "y")
+            if new_level:
+                attrs = nx.get_node_attributes(G, "level")
+                attrs[idx] = new_level
+                nx.set_node_attributes(G, attrs, "level")
+
+        # when
+        p4(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), len(nodes))
+        self.assertEqual(len(G.edges), len(edges))
+
+        I_node_count = sum(map(lambda n: n[1]['label'] == 'I', nodes))
+        self.assertTrue(I_node_count in (0, 2)) # we either removed all of the I-nodes or they were unchanged
+        self.assertTrue(all(map(lambda n: n[1]['label'] in ('E', 'I'), G.nodes(data=True)))) # The labels shouldn't change
 
 class P5_Test():
     def setUp(self):
