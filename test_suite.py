@@ -5,6 +5,8 @@ from p3 import p3
 from p4 import p4
 from p5 import p5
 from p6 import p6
+from p10 import p10
+
 
 class P3_Test(unittest.TestCase):
     def setUp(self):
@@ -19,14 +21,14 @@ class P3_Test(unittest.TestCase):
             (2, dict(label='E', x=1.0, y=1.0, level=level)),
             (3, dict(label='E', x=1.0, y=0.0, level=level)),
             (4, dict(label='E', x=0.0, y=0.0, level=level)),
-            (5, dict(label='I', x=1/3, y=2/3, level=level)),
-            (6, dict(label='I', x=2/3, y=1/3, level=level))
+            (5, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (6, dict(label='I', x=2 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), (4,1), # boundary edges
-            (2,4), # internal edge
-            (1,5), (2,5), (4,5), # internal I node of triangle <1,2,4>
-            (2,6), (3,6), (4,6)  # internal I node of triangle <2,3,4>
+            (1, 2), (2, 3), (3, 4), (4, 1),  # boundary edges
+            (2, 4),  # internal edge
+            (1, 5), (2, 5), (4, 5),  # internal I node of triangle <1,2,4>
+            (2, 6), (3, 6), (4, 6)  # internal I node of triangle <2,3,4>
         ]
 
         G = nx.Graph()
@@ -52,14 +54,14 @@ class P3_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.5, level=level)),
             (4, dict(label='E', x=1.0, y=0.0, level=level)),
             (5, dict(label='E', x=0.0, y=0.0, level=level)),
-            (6, dict(label='I', x=1/3, y=2/3, level=level)),
-            (7, dict(label='I', x=2/3, y=1/3, level=level))
+            (6, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (7, dict(label='I', x=2 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), (4,5), (5,1), # boundary edges
-            (2,5), # internal edge
-            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
-            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+            (1, 2), (2, 3), (3, 4), (4, 5), (5, 1),  # boundary edges
+            (2, 5),  # internal edge
+            (1, 6), (2, 6), (5, 6),  # internal I node of triangle <1,2,5>
+            (2, 7), (4, 7), (5, 7)  # internal I node of triangle <2,4,5>
         ]
 
         G = nx.Graph()
@@ -85,14 +87,14 @@ class P3_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.0, level=level)),
             (4, dict(label='E', x=0.0, y=0.0, level=level)),
             (5, dict(label='E', x=0.5, y=0.5, level=level)),
-            (6, dict(label='I', x=1/3, y=2/3, level=level)),
-            (7, dict(label='I', x=2/3, y=1/3, level=level))
+            (6, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (7, dict(label='I', x=2 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), (4,1), # boundary edges
-            (2,5), (5,4), # internal edges
-            (1,6), (2,6), (4,6), # internal I node of triangle <1,2,4>
-            (2,7), (3,7), (4,7)  # internal I node of triangle <2,3,4>
+            (1, 2), (2, 3), (3, 4), (4, 1),  # boundary edges
+            (2, 5), (5, 4),  # internal edges
+            (1, 6), (2, 6), (4, 6),  # internal I node of triangle <1,2,4>
+            (2, 7), (3, 7), (4, 7)  # internal I node of triangle <2,3,4>
         ]
 
         G = nx.Graph()
@@ -123,6 +125,7 @@ class P3_Test(unittest.TestCase):
         self.assertEqual(G.nodes[6]['label'], 'i')
         self.assertEqual(G.nodes[7]['label'], 'i')
 
+
 class P4_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -137,14 +140,14 @@ class P4_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.5, level=level)),
             (4, dict(label='E', x=1.0, y=0.0, level=level)),
             (5, dict(label='E', x=0.0, y=0.0, level=level)),
-            (6, dict(label='I', x=1/3, y=2/3, level=level)),
-            (7, dict(label='I', x=2/3, y=1/3, level=level))
+            (6, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (7, dict(label='I', x=2 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), (4,5), (5,1), # boundary edges
-            (2,5), # internal edge
-            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
-            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+            (1, 2), (2, 3), (3, 4), (4, 5), (5, 1),  # boundary edges
+            (2, 5),  # internal edge
+            (1, 6), (2, 6), (5, 6),  # internal I node of triangle <1,2,5>
+            (2, 7), (4, 7), (5, 7)  # internal I node of triangle <2,4,5>
         ]
 
         G = nx.Graph()
@@ -170,15 +173,15 @@ class P4_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.5, level=level)),
             (4, dict(label='E', x=1.0, y=0.0, level=level)),
             (5, dict(label='E', x=0.0, y=0.0, level=level)),
-            (6, dict(label='I', x=1/3, y=2/3, level=level)),
-            (7, dict(label='I', x=2/3, y=1/3, level=level)),
+            (6, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (7, dict(label='I', x=2 / 3, y=1 / 3, level=level)),
             (8, dict(label='E', x=0.5, y=0.5, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), (4,5), (5,1), # boundary edges
-            (2,8), (8,5), # internal edges
-            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
-            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+            (1, 2), (2, 3), (3, 4), (4, 5), (5, 1),  # boundary edges
+            (2, 8), (8, 5),  # internal edges
+            (1, 6), (2, 6), (5, 6),  # internal I node of triangle <1,2,5>
+            (2, 7), (4, 7), (5, 7)  # internal I node of triangle <2,4,5>
         ]
 
         G = nx.Graph()
@@ -193,7 +196,7 @@ class P4_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges) + 16 + 3)
         self.assertEqual(G.nodes[6]['label'], 'I')
         self.assertEqual(G.nodes[7]['label'], 'i')
-    
+
     def test_should_split_exactly_one_triangle_in_each_call(self):
         # given
         level = 2
@@ -204,16 +207,16 @@ class P4_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.5, level=level)),
             (4, dict(label='E', x=1.0, y=0.0, level=level)),
             (5, dict(label='E', x=0.0, y=0.0, level=level)),
-            (6, dict(label='I', x=1/3, y=2/3, level=level)),
-            (7, dict(label='I', x=2/3, y=1/3, level=level)),
+            (6, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (7, dict(label='I', x=2 / 3, y=1 / 3, level=level)),
             (8, dict(label='E', x=0.5, y=0.5, level=level)),
             (9, dict(label='E', x=0.0, y=0.5, level=level))
         ]
         edges = [
-            (1,2), (2,3), (3,4), (4,5), (5,9), (9,1), # boundary edges
-            (2,8), (8,5), # internal edges
-            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
-            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+            (1, 2), (2, 3), (3, 4), (4, 5), (5, 9), (9, 1),  # boundary edges
+            (2, 8), (8, 5),  # internal edges
+            (1, 6), (2, 6), (5, 6),  # internal I node of triangle <1,2,5>
+            (2, 7), (4, 7), (5, 7)  # internal I node of triangle <2,4,5>
         ]
 
         G = nx.Graph()
@@ -244,12 +247,13 @@ class P4_Test(unittest.TestCase):
         self.assertEqual(G.nodes[6]['label'], 'i')
         self.assertEqual(G.nodes[7]['label'], 'i')
 
+
 class P5_Test(unittest.TestCase):
     def setUp(self):
         pass
 
     def test_should_split_triangle_when_isomorphic_subgraph_found(self):
-        #given
+        # given
         level = 2
 
         nodes = [
@@ -259,15 +263,15 @@ class P5_Test(unittest.TestCase):
             (4, dict(label='E', x=0.0, y=0.5, level=level)),
             (5, dict(label='E', x=0.5, y=0.0, level=level)),
             (6, dict(label='E', x=0.5, y=0.5, level=level)),
-            (7, dict(label='I', x=1/3, y=2/3, level=level)),
-            (8, dict(label='E', x=2/3, y=0.0, level=level)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level))
+            (7, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (8, dict(label='E', x=2 / 3, y=0.0, level=level)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,4), (4,2), (2,5), (5,3), (3,6), (6,1), # boundary edges
-            (1,8), (2,8), # internal edges
-            (1,7), (2,7), (3,7), # internal I node of triangle <1,2,3>
-            (1,9), (2,9), (8,9)  # internal I node of triangle <1,2,8>
+            (1, 4), (4, 2), (2, 5), (5, 3), (3, 6), (6, 1),  # boundary edges
+            (1, 8), (2, 8),  # internal edges
+            (1, 7), (2, 7), (3, 7),  # internal I node of triangle <1,2,3>
+            (1, 9), (2, 9), (8, 9)  # internal I node of triangle <1,2,8>
         ]
 
         G = nx.Graph()
@@ -284,7 +288,7 @@ class P5_Test(unittest.TestCase):
         self.assertEqual(G.nodes[9]['label'], 'I')
 
     def test_should_not_split_when_constraints_not_met(self):
-        #given
+        # given
         level = 2
 
         nodes = [
@@ -294,15 +298,15 @@ class P5_Test(unittest.TestCase):
             (4, dict(label='E', x=0.0, y=0.5, level=level)),
             (5, dict(label='E', x=0.4, y=0.0, level=level)),
             (6, dict(label='E', x=0.5, y=0.5, level=level)),
-            (7, dict(label='I', x=1/3, y=2/3, level=level)),
-            (8, dict(label='E', x=2/3, y=0.0, level=level)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level))
+            (7, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (8, dict(label='E', x=2 / 3, y=0.0, level=level)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,4), (4,2), (2,5), (5,3), (3,6), (6,1), # boundary edges
-            (1,8), (2,8), # internal edges
-            (1,7), (2,7), (3,7), # internal I node of triangle <1,2,3>
-            (1,9), (2,9), (8,9)  # internal I node of triangle <1,2,8>
+            (1, 4), (4, 2), (2, 5), (5, 3), (3, 6), (6, 1),  # boundary edges
+            (1, 8), (2, 8),  # internal edges
+            (1, 7), (2, 7), (3, 7),  # internal I node of triangle <1,2,3>
+            (1, 9), (2, 9), (8, 9)  # internal I node of triangle <1,2,8>
         ]
 
         G = nx.Graph()
@@ -319,7 +323,7 @@ class P5_Test(unittest.TestCase):
         self.assertEqual(G.nodes[9]['label'], 'I')
 
     def test_should_not_split_when_constraints_not_met_deleted_node(self):
-        #given
+        # given
         level = 2
 
         nodes = [
@@ -328,15 +332,15 @@ class P5_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.0, level=level)),
             (4, dict(label='E', x=0.0, y=0.5, level=level)),
             (6, dict(label='E', x=0.5, y=0.5, level=level)),
-            (7, dict(label='I', x=1/3, y=2/3, level=level)),
-            (8, dict(label='E', x=2/3, y=0.0, level=level)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level))
+            (7, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (8, dict(label='E', x=2 / 3, y=0.0, level=level)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,4), (4,2), (2,3), (3,6), (6,1), # boundary edges
-            (1,8), (2,8), # internal edges
-            (1,7), (2,7), (3,7), # internal I node of triangle <1,2,3>
-            (1,9), (2,9), (8,9)  # internal I node of triangle <1,2,8>
+            (1, 4), (4, 2), (2, 3), (3, 6), (6, 1),  # boundary edges
+            (1, 8), (2, 8),  # internal edges
+            (1, 7), (2, 7), (3, 7),  # internal I node of triangle <1,2,3>
+            (1, 9), (2, 9), (8, 9)  # internal I node of triangle <1,2,8>
         ]
 
         G = nx.Graph()
@@ -353,7 +357,7 @@ class P5_Test(unittest.TestCase):
         self.assertEqual(G.nodes[9]['label'], 'I')
 
     def test_should_not_split_when_constraints_not_met_edge_deleted(self):
-        #given
+        # given
         level = 2
 
         nodes = [
@@ -362,15 +366,15 @@ class P5_Test(unittest.TestCase):
             (3, dict(label='E', x=1.0, y=0.0, level=level)),
             (4, dict(label='E', x=0.0, y=0.5, level=level)),
             (6, dict(label='E', x=0.5, y=0.5, level=level)),
-            (7, dict(label='I', x=1/3, y=2/3, level=level)),
-            (8, dict(label='E', x=2/3, y=0.0, level=level)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level))
+            (7, dict(label='I', x=1 / 3, y=2 / 3, level=level)),
+            (8, dict(label='E', x=2 / 3, y=0.0, level=level)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level))
         ]
         edges = [
-            (1,4), (4,2), (3,6), (6,1), # boundary edges
-            (1,8), (2,8), # internal edges
-            (1,7), (2,7), (3,7), # internal I node of triangle <1,2,3>
-            (1,9), (2,9), (8,9)  # internal I node of triangle <1,2,8>
+            (1, 4), (4, 2), (3, 6), (6, 1),  # boundary edges
+            (1, 8), (2, 8),  # internal edges
+            (1, 7), (2, 7), (3, 7),  # internal I node of triangle <1,2,3>
+            (1, 9), (2, 9), (8, 9)  # internal I node of triangle <1,2,8>
         ]
 
         G = nx.Graph()
@@ -386,6 +390,7 @@ class P5_Test(unittest.TestCase):
         self.assertEqual(G.nodes[7]['label'], 'I')
         self.assertEqual(G.nodes[9]['label'], 'I')
 
+
 class P6_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -398,18 +403,18 @@ class P6_Test(unittest.TestCase):
             (1, dict(label='i', x=1.0, y=0.0, level=level)),
             (2, dict(label='E', x=0.0, y=0.0, level=level)),
             (3, dict(label='E', x=1.0, y=1.0, level=level)),
-            (4, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (5, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (6, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (8, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (10, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (11, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (12, dict(label='E', x=0.5, y=0.5, level=level+1)),
-            (13, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (14, dict(label='E', x=2/3, y=2/3, level=level+1)),
-            (15, dict(label='E', x=1.0, y=2/3, level=level+1)),
-            (16, dict(label='E', x=1/3, y=1.0, level=level+1)),
+            (4, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (5, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (6, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (8, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (10, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (11, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (12, dict(label='E', x=0.5, y=0.5, level=level + 1)),
+            (13, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (14, dict(label='E', x=2 / 3, y=2 / 3, level=level + 1)),
+            (15, dict(label='E', x=1.0, y=2 / 3, level=level + 1)),
+            (16, dict(label='E', x=1 / 3, y=1.0, level=level + 1)),
         ]
 
         edges = [
@@ -455,19 +460,19 @@ class P6_Test(unittest.TestCase):
             (1, dict(label='i', x=1.0, y=0.0, level=level)),
             (2, dict(label='E', x=0.0, y=0.0, level=level)),
             (3, dict(label='E', x=1.0, y=1.0, level=level)),
-            (4, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (5, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (6, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (7, dict(label='E', x=0.5, y=0.5, level=level+1)),
-            (8, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (10, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (11, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (12, dict(label='E', x=0.5, y=0.5, level=level+1)),
-            (13, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (14, dict(label='E', x=2/3, y=2/3, level=level+1)),
-            (15, dict(label='E', x=1.0, y=2/3, level=level+1)),
-            (16, dict(label='E', x=1/3, y=1.0, level=level+1)),
+            (4, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (5, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (6, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (7, dict(label='E', x=0.5, y=0.5, level=level + 1)),
+            (8, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (10, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (11, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (12, dict(label='E', x=0.5, y=0.5, level=level + 1)),
+            (13, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (14, dict(label='E', x=2 / 3, y=2 / 3, level=level + 1)),
+            (15, dict(label='E', x=1.0, y=2 / 3, level=level + 1)),
+            (16, dict(label='E', x=1 / 3, y=1.0, level=level + 1)),
         ]
 
         edges = [
@@ -516,19 +521,19 @@ class P6_Test(unittest.TestCase):
             (1, dict(label='i', x=1.0, y=0.0, level=level)),
             (2, dict(label='E', x=0.0, y=0.0, level=level)),
             (3, dict(label='E', x=1.0, y=1.0, level=level)),
-            (4, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (5, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (6, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (7, dict(label='E', x=0.6, y=0.5, level=level+1)),
-            (8, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (10, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (11, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (12, dict(label='E', x=0.5, y=0.5, level=level+1)),
-            (13, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (14, dict(label='E', x=2/3, y=2/3, level=level+1)),
-            (15, dict(label='E', x=1.0, y=2/3, level=level+1)),
-            (16, dict(label='E', x=1/3, y=1.0, level=level+1)),
+            (4, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (5, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (6, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (7, dict(label='E', x=0.6, y=0.5, level=level + 1)),
+            (8, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (10, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (11, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (12, dict(label='E', x=0.5, y=0.5, level=level + 1)),
+            (13, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (14, dict(label='E', x=2 / 3, y=2 / 3, level=level + 1)),
+            (15, dict(label='E', x=1.0, y=2 / 3, level=level + 1)),
+            (16, dict(label='E', x=1 / 3, y=1.0, level=level + 1)),
         ]
 
         edges = [
@@ -577,19 +582,19 @@ class P6_Test(unittest.TestCase):
             (1, dict(label='i', x=1.0, y=0.0, level=level)),
             (2, dict(label='E', x=0.0, y=0.0, level=level)),
             (3, dict(label='E', x=1.0, y=1.0, level=level)),
-            (4, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (5, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (6, dict(label='E', x=0.0, y=0.0, level=level+1)),
-            (7, dict(label='E', x=0.5, y=0.5, level=level+1)),
-            (8, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (9, dict(label='I', x=1/3, y=1/3, level=level+1)),
-            (10, dict(label='I', x=2/3, y=2/3, level=level+1)),
-            (11, dict(label='E', x=0.2, y=0.0, level=level+1)),
-            (12, dict(label='E', x=0.5, y=0.5, level=level+1)),
-            (13, dict(label='E', x=1.0, y=1.0, level=level+1)),
-            (14, dict(label='E', x=2/3, y=2/3, level=level+1)),
-            (15, dict(label='E', x=1.0, y=2/3, level=level+1)),
-            (16, dict(label='E', x=1/3, y=1.0, level=level+1)),
+            (4, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (5, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (6, dict(label='E', x=0.0, y=0.0, level=level + 1)),
+            (7, dict(label='E', x=0.5, y=0.5, level=level + 1)),
+            (8, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (9, dict(label='I', x=1 / 3, y=1 / 3, level=level + 1)),
+            (10, dict(label='I', x=2 / 3, y=2 / 3, level=level + 1)),
+            (11, dict(label='E', x=0.2, y=0.0, level=level + 1)),
+            (12, dict(label='E', x=0.5, y=0.5, level=level + 1)),
+            (13, dict(label='E', x=1.0, y=1.0, level=level + 1)),
+            (14, dict(label='E', x=2 / 3, y=2 / 3, level=level + 1)),
+            (15, dict(label='E', x=1.0, y=2 / 3, level=level + 1)),
+            (16, dict(label='E', x=1 / 3, y=1.0, level=level + 1)),
         ]
 
         edges = [
@@ -629,6 +634,67 @@ class P6_Test(unittest.TestCase):
         # then
         self.assertEqual(len(G.nodes), len(nodes))
         self.assertEqual(len(G.edges), len(edges))
+
+
+class P10_Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def _idealGraph(self, level):
+        nodes = [
+            (0, dict(label='i', x=0, y=0, level=0)),
+            (1, dict(label='i', x=1, y=1, level=0)),
+            (2, dict(label='E', x=1, y=0, level=0)),
+            (3, dict(label='E', x=0, y=1, level=0)),
+            (4, dict(label='I', x=1, y=0, level=1)),
+            (5, dict(label='I', x=1, y=0, level=1)),
+            (6, dict(label='I', x=1, y=1, level=1)),
+            (7, dict(label='E', x=1, y=0, level=1)),
+            (8, dict(label='E', x=1 / 2, y=1 / 2, level=1)),
+            (9, dict(label='E', x=0, y=1, level=1)),
+            (10, dict(label='E', x=1, y=0, level=1)),
+            (11, dict(label='E', x=0, y=1, level=1))
+        ]
+
+        edges = [
+            (0, 2),
+            (0, 3),
+            (1, 2),
+            (1, 3),
+            (2, 3),
+            (0, 4),
+            (0, 5),
+            (1, 6),
+            (4, 7),
+            (4, 8),
+            (5, 8),
+            (5, 9),
+            (6, 10),
+            (6, 11),
+            (7, 8),
+            (8, 9),
+            (10, 11),
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+        return G
+
+    def test_should_merge_nodes_when_isomorphic_subgraph_found(self):
+        # given
+        level = 0
+        G = self._idealGraph(level)
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        # when
+        p10(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), nodes_len - 2)
+        self.assertEqual(len(G.edges), edge_len - 1)
+
 
 if __name__ == '__main__':
     unittest.main()
