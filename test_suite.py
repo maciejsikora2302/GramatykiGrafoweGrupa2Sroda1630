@@ -422,6 +422,48 @@ class P3_Test(unittest.TestCase):
         self.assertTrue(I_node_count in (0, 2)) # we either removed all of the I-nodes or they were unchanged
         self.assertTrue(all(map(lambda n: n[1]['label'] in ('E', 'I'), G.nodes(data=True)))) # The labels shouldn't change
 
+    def test_should_not_modify_the_graph_meeting_criteria_for_p4(self):
+        # given
+        level = 2
+
+        nodes = [
+            (1, dict(label='E', x=0.0, y=1.0, level=level)),
+            (2, dict(label='E', x=1.0, y=1.0, level=level)),
+            (3, dict(label='E', x=1.0, y=0.5, level=level)),
+            (4, dict(label='E', x=1.0, y=0.0, level=level)),
+            (5, dict(label='E', x=0.0, y=0.0, level=level)),
+            (6, dict(label='I', x=1/3, y=2/3, level=level)),
+            (7, dict(label='I', x=2/3, y=1/3, level=level)),
+            (8, dict(label='E', x=0.5, y=0.5, level=level)),
+            (9, dict(label='E', x=0.0, y=0.5, level=level))
+        ]
+        edges = [
+            (1,2), (2,3), (3,4), (4,5), (5,9), (9,1), # boundary edges
+            (2,8), (8,5), # internal edges
+            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
+            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+
+        # when-then (p3 ~ no changes)
+        p3(G, level)
+
+        self.assertEqual(len(G.nodes), len(nodes))
+        self.assertEqual(len(G.edges), len(edges))
+        self.assertEqual(G.nodes[6]['label'], 'I')
+        self.assertEqual(G.nodes[7]['label'], 'I')
+
+        # when-then (p4 ~ changes)
+        p4(G, level)
+
+        self.assertEqual(len(G.nodes), len(nodes) + 8)
+        self.assertEqual(len(G.edges), len(edges) + 16 + 3)
+        broken_triangles_cnt = sum([1 if G.nodes[x]['label'] == 'i' else 0 for x in [6, 7]])
+        self.assertEqual(broken_triangles_cnt, 1)
+
 class P4_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -618,6 +660,46 @@ class P4_Test(unittest.TestCase):
         I_node_count = sum(map(lambda n: n[1]['label'] == 'I', nodes))
         self.assertTrue(I_node_count in (0, 2)) # we either removed all of the I-nodes or they were unchanged
         self.assertTrue(all(map(lambda n: n[1]['label'] in ('E', 'I'), G.nodes(data=True)))) # The labels shouldn't change
+
+    def test_should_not_modify_the_graph_meeting_criteria_for_p3(self):
+        # given
+        level = 2
+
+        nodes = [
+            (1, dict(label='E', x=0.0, y=1.0, level=level)),
+            (2, dict(label='E', x=1.0, y=1.0, level=level)),
+            (3, dict(label='E', x=1.0, y=0.5, level=level)),
+            (4, dict(label='E', x=1.0, y=0.0, level=level)),
+            (5, dict(label='E', x=0.0, y=0.0, level=level)),
+            (6, dict(label='I', x=1/3, y=2/3, level=level)),
+            (7, dict(label='I', x=2/3, y=1/3, level=level))
+        ]
+        edges = [
+            (1,2), (2,3), (3,4), (4,5), (5,1), # boundary edges
+            (2,5), # internal edge
+            (1,6), (2,6), (5,6), # internal I node of triangle <1,2,5>
+            (2,7), (4,7), (5,7)  # internal I node of triangle <2,4,5>
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+
+        # when-then (p4 ~ no changes)
+        p4(G, level)
+
+        self.assertEqual(len(G.nodes), len(nodes))
+        self.assertEqual(len(G.edges), len(edges))
+        self.assertEqual(G.nodes[6]['label'], 'I')
+        self.assertEqual(G.nodes[7]['label'], 'I')
+
+        # when-then (p3 ~ changes)
+        p3(G, level)
+
+        self.assertEqual(len(G.nodes), len(nodes) + 6)
+        self.assertEqual(len(G.edges), len(edges) + 11 + 2)
+        self.assertEqual(G.nodes[6]['label'], 'I')
+        self.assertEqual(G.nodes[7]['label'], 'i')
 
 class P5_Test():
     def setUp(self):
