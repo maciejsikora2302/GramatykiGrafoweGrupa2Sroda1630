@@ -1,2 +1,6 @@
 __pycache__/
+
 .idea
+
+/dev_draw
+/saved_graphs
