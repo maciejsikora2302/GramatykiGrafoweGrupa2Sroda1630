@@ -22,21 +22,24 @@ def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") ->
 
     xs = nx.get_node_attributes(graph, Attribute.X)
     ys = nx.get_node_attributes(graph, Attribute.Y)
+    label_attr = nx.get_node_attributes(graph, Attribute.LABEL)
+    levels = nx.get_node_attributes(graph, Attribute.LEVEL)
 
+    max_level = max(levels.values())
     pos = {
-        node: (graph.nodes[node][Attribute.X], graph.nodes[node][Attribute.Y] + graph.nodes[node][Attribute.LEVEL] * 80) for node in graph.nodes
+        node: (
+            graph.nodes[node][Attribute.X],
+            graph.nodes[node][Attribute.Y] + (max_level - graph.nodes[node][Attribute.LEVEL]) * 2
+        ) for node in graph.nodes
     }
 
     pos_labels = copy(pos)
     for node in graph.nodes():
         pos_labels[node] = (pos[node][0], pos[node][1] + 0.3)
 
-    label_attr = nx.get_node_attributes(graph, Attribute.LABEL)
-    levels = nx.get_node_attributes(graph, Attribute.LEVEL)
-
-    red_labels = ["El", "el"]
-    blue_labels = ["E", "e"]
-    yellow_labels = ["I", "i"]
+    red_labels = ['El', 'el']
+    blue_labels = ['E', 'e']
+    yellow_labels = ['I', 'i']
 
     node_colors = []
     for node in graph.nodes():
@@ -54,7 +57,7 @@ def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") ->
         for node in graph.nodes()
     }
 
-    plt.figure(figsize=(12, 4 + 8 * max(levels.values())))
+    plt.figure(figsize=(12, 4 + 8 * max_level))
 
     nx.draw_networkx_nodes(
         graph,

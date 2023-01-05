@@ -33,7 +33,7 @@ from p4 import p4
 
 if __name__ == "__main__":
     graph = nx.Graph()
-    graph.add_node(0, label="El", x=-10.0, y=-10.0, level=0)
+    graph.add_node(0, label="El", x=0.5, y=0.5, level=0)
 
     draw(graph, filename="./dev_draw/before.png")
     p1(graph, 0)
