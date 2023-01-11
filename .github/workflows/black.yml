@@ -18,5 +18,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           black: true
-          black_args: "--extend-exclude /(VenvPythonGrafowe|__pypackages__)/]"
+          black_args: "--extend-exclude /VenvPythonGrafowe/"
           auto_fix: true
