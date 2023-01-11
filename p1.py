@@ -1,16 +1,13 @@
 import networkx as nx
 from graph_functions import *
 
-def p1(graph: nx.Graph, level: int):
+def p1(graph: nx.Graph, level: int, low: float = 1.0, high: float = 40.0):
     left_production_side_graph = nx.Graph()
     parent_tmp_node_number = 8
 
     left_production_side_graph.add_nodes_from([
         (parent_tmp_node_number, dict(label='El', level=0))
     ])
-
-    high = 40.0
-    low = 1.0
 
     right_side_parent_node = (parent_tmp_node_number, dict(label='el', x=None, y=None, level=level))
     right_side_nodes_new = [

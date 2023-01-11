@@ -65,6 +65,6 @@ def p6(graph: nx.Graph, level: int) -> None:
         Y[t_node - 1] = graph.nodes[g_node][Attribute.Y]
         levels[t_node - 1] = graph.nodes[g_node][Attribute.LEVEL]
 
-    merge_nodes(graph, [isomorphic_mapping[6], isomorphic_mapping[11]], (6, dict(label='E', x=X[6], y=Y[6], level=levels[6])))
-    merge_nodes(graph, [isomorphic_mapping[7], isomorphic_mapping[12]], (7, dict(label='E', x=X[7], y=Y[7], level=levels[7])))
-    merge_nodes(graph, [isomorphic_mapping[8], isomorphic_mapping[13]], (8, dict(label='E', x=X[8], y=Y[8], level=levels[8])))
+    merge_nodes(graph, [isomorphic_mapping[6], isomorphic_mapping[11]], (isomorphic_mapping[6], dict(label='E', x=X[6], y=Y[6], level=levels[6])))
+    merge_nodes(graph, [isomorphic_mapping[7], isomorphic_mapping[12]], (isomorphic_mapping[7], dict(label='E', x=X[7], y=Y[7], level=levels[7])))
+    merge_nodes(graph, [isomorphic_mapping[8], isomorphic_mapping[13]], (isomorphic_mapping[8], dict(label='E', x=X[8], y=Y[8], level=levels[8])))
