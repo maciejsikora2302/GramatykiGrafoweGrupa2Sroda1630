@@ -16,7 +16,8 @@ def node_comparator(found_node, searched_node) -> bool:
 
 def node_comparator_factory(level: int) -> typing.Callable:
     def node_comparator(found_node, searched_node) -> bool:
-        return found_node[Attribute.LEVEL] == level and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
+        desired_level = level + searched_node.get(Attribute.LEVEL, 0)
+        return found_node[Attribute.LEVEL] == desired_level and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
 
     return node_comparator
 
@@ -38,17 +39,22 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
             'first_node': 1,
             'second_node': 2,
             'constrained_middle_node': 3
+        },
+        {
+            'node': 4,
+            'constrained_equal_node': 5
         }]
     
     x of 'constrained_middle_node' == (x of 'first_node' + x of 'second_node') / 2
     y of 'constrained_middle_node' == (y of 'first_node' + y of 'second_node') / 2
+    x of 'node' == x of 'constrained_equal_node'
+    y of 'node' == y of 'constrained_equal_node'
     '''
     def predicate(mapping):
         eps = 1e-4
+        checked_constraints = [False for _ in range(len(constraints))]            
 
-        checked_constraints = [False for _ in range(len(constraints))]
-
-        for i, constraint in enumerate(constraints):
+        def check_middle_node_constraint(constraint, i):
             first_node = graph.nodes[mapping[constraint['first_node']]]
             second_node = graph.nodes[mapping[constraint['second_node']]]
             expected_node = graph.nodes[mapping[constraint['constrained_middle_node']]]
@@ -57,6 +63,23 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
             x3, y3 = expected_node[Attribute.X], expected_node[Attribute.Y]
             if (np.abs((x1 + x2) / 2 - x3) < eps and np.abs((y1 + y2) / 2 - y3) < eps):
                 checked_constraints[i] = True
+    
+        def check_equal_nodes_constraint(constraint, i):
+            first_node = graph.nodes[mapping[constraint['node']]]
+            second_node = graph.nodes[mapping[constraint['constrained_equal_node']]]
+            x1, y1 = first_node[Attribute.X], first_node[Attribute.Y]
+            x2, y2 = second_node[Attribute.X], second_node[Attribute.Y]
+            if np.abs(x1 - x2) < eps and np.abs(y1 - y2) < eps:
+                checked_constraints[i] = True
+
+        for i, constraint in enumerate(constraints):
+            constraint_keys = list(constraint.keys())
+            if constraint_keys == ['first_node', 'second_node', 'constrained_middle_node']:
+                check_middle_node_constraint(constraint, i)
+            elif constraint_keys == ['node', 'constrained_equal_node']:
+                check_equal_nodes_constraint(constraint, i)
+            else:
+                raise Exception("Invalid constraint")
 
         # pp(checked_constraints)
         return all(checked_constraints)
@@ -105,3 +128,16 @@ def add_to_graph(
 
     graph.add_nodes_from(right_side_nodes_mapped)
     graph.add_edges_from(right_side_edges_mapped)
+
+def merge_nodes(graph: nx.Graph, nodes: list, new_node: tuple):
+    graph_edges = graph.copy().edges()
+    for n in nodes:
+        graph.remove_node(n)
+
+    graph.add_nodes_from([new_node])
+    
+    for n1,n2 in graph_edges:
+        if n1 in nodes:
+            graph.add_edge(new_node[0],n2)
+        elif n2 in nodes:
+            graph.add_edge(n1,new_node[0])
