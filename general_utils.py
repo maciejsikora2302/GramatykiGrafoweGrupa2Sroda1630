@@ -29,17 +29,19 @@ def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") ->
     pos = {
         node: (
             graph.nodes[node][Attribute.X],
-            graph.nodes[node][Attribute.Y] + (max_level - graph.nodes[node][Attribute.LEVEL]) * 2
-        ) for node in graph.nodes
+            graph.nodes[node][Attribute.Y]
+            + (max_level - graph.nodes[node][Attribute.LEVEL]) * 2,
+        )
+        for node in graph.nodes
     }
 
     pos_labels = copy(pos)
     for node in graph.nodes():
         pos_labels[node] = (pos[node][0], pos[node][1] + 0.3)
 
-    red_labels = ['El', 'el']
-    blue_labels = ['E', 'e']
-    yellow_labels = ['I', 'i']
+    red_labels = ["El", "el"]
+    blue_labels = ["E", "e"]
+    yellow_labels = ["I", "i"]
 
     node_colors = []
     for node in graph.nodes():
