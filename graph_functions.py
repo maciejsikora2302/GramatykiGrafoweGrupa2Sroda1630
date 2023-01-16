@@ -4,35 +4,49 @@ import numpy as np
 from general_utils import Attribute, draw
 from pprint import pprint as pp
 
+
 def find_parents(graph: nx.Graph, level: int, label: str) -> list:
     parents = []
     for node in graph.nodes:
-        if graph.nodes[node][Attribute.LEVEL] == level - 1 and graph.nodes[node][Attribute.LABEL] == label:
+        if (
+            graph.nodes[node][Attribute.LEVEL] == level - 1
+            and graph.nodes[node][Attribute.LABEL] == label
+        ):
             parents.append(node)
     return parents
+
 
 def node_comparator(found_node, searched_node) -> bool:
     return found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
 
+
 def node_comparator_factory(level: int) -> typing.Callable:
     def node_comparator(found_node, searched_node) -> bool:
         desired_level = level + searched_node.get(Attribute.LEVEL, 0)
-        return found_node[Attribute.LEVEL] == desired_level and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
+        return (
+            found_node[Attribute.LEVEL] == desired_level
+            and found_node[Attribute.LABEL] == searched_node[Attribute.LABEL]
+        )
 
     return node_comparator
 
 
 def find_isomporphic(graph: nx.Graph, left_side_graph: nx.Graph, level: int) -> dict:
     isomorphic_graphs = []
-    graph_matcher = nx.algorithms.isomorphism.GraphMatcher(graph, left_side_graph, node_match=node_comparator_factory(level))
+    graph_matcher = nx.algorithms.isomorphism.GraphMatcher(
+        graph, left_side_graph, node_match=node_comparator_factory(level)
+    )
     for isomorphic_graph in graph_matcher.subgraph_isomorphisms_iter():
         # mapping should be directed from template to real graph:
         inversed_isomorphism = {v: k for k, v in isomorphic_graph.items()}
         isomorphic_graphs.append(inversed_isomorphism)
     return isomorphic_graphs
 
-def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: int, constraints: list = None) -> dict:
-    '''
+
+def find_isomorphic_wrapper(
+    graph: nx.Graph, left_side_graph: nx.Graph, level: int, constraints: list = None
+) -> dict:
+    """
     constraints refer to node in left_side_graph.
     Example constraints:
         [{
@@ -44,29 +58,30 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
             'node': 4,
             'constrained_equal_node': 5
         }]
-    
+
     x of 'constrained_middle_node' == (x of 'first_node' + x of 'second_node') / 2
     y of 'constrained_middle_node' == (y of 'first_node' + y of 'second_node') / 2
     x of 'node' == x of 'constrained_equal_node'
     y of 'node' == y of 'constrained_equal_node'
-    '''
+    """
+
     def predicate(mapping):
         eps = 1e-4
-        checked_constraints = [False for _ in range(len(constraints))]            
+        checked_constraints = [False for _ in range(len(constraints))]
 
         def check_middle_node_constraint(constraint, i):
-            first_node = graph.nodes[mapping[constraint['first_node']]]
-            second_node = graph.nodes[mapping[constraint['second_node']]]
-            expected_node = graph.nodes[mapping[constraint['constrained_middle_node']]]
+            first_node = graph.nodes[mapping[constraint["first_node"]]]
+            second_node = graph.nodes[mapping[constraint["second_node"]]]
+            expected_node = graph.nodes[mapping[constraint["constrained_middle_node"]]]
             x1, y1 = first_node[Attribute.X], first_node[Attribute.Y]
             x2, y2 = second_node[Attribute.X], second_node[Attribute.Y]
             x3, y3 = expected_node[Attribute.X], expected_node[Attribute.Y]
-            if (np.abs((x1 + x2) / 2 - x3) < eps and np.abs((y1 + y2) / 2 - y3) < eps):
+            if np.abs((x1 + x2) / 2 - x3) < eps and np.abs((y1 + y2) / 2 - y3) < eps:
                 checked_constraints[i] = True
-    
+
         def check_equal_nodes_constraint(constraint, i):
-            first_node = graph.nodes[mapping[constraint['node']]]
-            second_node = graph.nodes[mapping[constraint['constrained_equal_node']]]
+            first_node = graph.nodes[mapping[constraint["node"]]]
+            second_node = graph.nodes[mapping[constraint["constrained_equal_node"]]]
             x1, y1 = first_node[Attribute.X], first_node[Attribute.Y]
             x2, y2 = second_node[Attribute.X], second_node[Attribute.Y]
             if np.abs(x1 - x2) < eps and np.abs(y1 - y2) < eps:
@@ -74,9 +89,13 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
 
         for i, constraint in enumerate(constraints):
             constraint_keys = list(constraint.keys())
-            if constraint_keys == ['first_node', 'second_node', 'constrained_middle_node']:
+            if constraint_keys == [
+                "first_node",
+                "second_node",
+                "constrained_middle_node",
+            ]:
                 check_middle_node_constraint(constraint, i)
-            elif constraint_keys == ['node', 'constrained_equal_node']:
+            elif constraint_keys == ["node", "constrained_equal_node"]:
                 check_equal_nodes_constraint(constraint, i)
             else:
                 raise Exception("Invalid constraint")
@@ -84,50 +103,74 @@ def find_isomorphic_wrapper(graph: nx.Graph, left_side_graph: nx.Graph, level: i
         # pp(checked_constraints)
         return all(checked_constraints)
 
-
     initially_found = find_isomporphic(graph, left_side_graph, level)
 
-    #modify later here to add ability to choose which mapping to use
+    # modify later here to add ability to choose which mapping to use
     try:
-        return initially_found[0] if constraints is None else list(filter(predicate, initially_found))[0]
+        return (
+            initially_found[0]
+            if constraints is None
+            else list(filter(predicate, initially_found))[0]
+        )
     except IndexError as e:
         return None
 
+
 def add_to_graph(
-    graph: nx.Graph, 
-    isomorphic_mapping: dict, 
-    right_side_parent_node: tuple, 
-    right_side_nodes_new: list, 
-    right_side_edges: list
-    ):
+    graph: nx.Graph,
+    isomorphic_mapping: dict,
+    right_side_parent_node: tuple,
+    right_side_nodes_new: list,
+    right_side_edges: list,
+):
     parent_tmp_node_number = right_side_parent_node[0]
 
     n = len(graph.nodes)
-    right_side_nodes_mapping = { node[0]: node[0] + n for node in right_side_nodes_new } # define a dictionay mapping old node number (based on right_side_nodes ) => graph node.
-    right_side_nodes_mapping[parent_tmp_node_number] = isomorphic_mapping[parent_tmp_node_number]
+    right_side_nodes_mapping = {
+        node[0]: node[0] + n for node in right_side_nodes_new
+    }  # define a dictionay mapping old node number (based on right_side_nodes ) => graph node.
+    right_side_nodes_mapping[parent_tmp_node_number] = isomorphic_mapping[
+        parent_tmp_node_number
+    ]
 
     right_side_edges_mapped = list(
-        map(lambda edge: (right_side_nodes_mapping[edge[0]], right_side_nodes_mapping[edge[1]]), right_side_edges))
+        map(
+            lambda edge: (
+                right_side_nodes_mapping[edge[0]],
+                right_side_nodes_mapping[edge[1]],
+            ),
+            right_side_edges,
+        )
+    )
 
     right_size_edges_to_parent = [
         (isomorphic_mapping[parent_tmp_node_number], right_side_nodes_mapping[node[0]])
-        for node in list(filter(lambda node: node[1][Attribute.LABEL] == 'I', right_side_nodes_new))
+        for node in list(
+            filter(lambda node: node[1][Attribute.LABEL] == "I", right_side_nodes_new)
+        )
     ]
 
     right_side_edges_mapped = right_side_edges_mapped + right_size_edges_to_parent
 
     right_side_nodes_mapped = list(
-        map(lambda node: (right_side_nodes_mapping[node[0]], node[1]), right_side_nodes_new))
-    
+        map(
+            lambda node: (right_side_nodes_mapping[node[0]], node[1]),
+            right_side_nodes_new,
+        )
+    )
+
     existing_node_parent = graph.nodes[isomorphic_mapping[parent_tmp_node_number]]
 
     for node in right_side_nodes_mapped:
         node[1][Attribute.LEVEL] = existing_node_parent[Attribute.LEVEL] + 1
 
-    graph.nodes[isomorphic_mapping[parent_tmp_node_number]][Attribute.LABEL] = right_side_parent_node[1][Attribute.LABEL]
+    graph.nodes[isomorphic_mapping[parent_tmp_node_number]][
+        Attribute.LABEL
+    ] = right_side_parent_node[1][Attribute.LABEL]
 
     graph.add_nodes_from(right_side_nodes_mapped)
     graph.add_edges_from(right_side_edges_mapped)
+
 
 def merge_nodes(graph: nx.Graph, nodes: list, new_node: tuple):
     graph_edges = graph.copy().edges()
@@ -135,9 +178,9 @@ def merge_nodes(graph: nx.Graph, nodes: list, new_node: tuple):
         graph.remove_node(n)
 
     graph.add_nodes_from([new_node])
-    
-    for n1,n2 in graph_edges:
+
+    for n1, n2 in graph_edges:
         if n1 in nodes:
-            graph.add_edge(new_node[0],n2)
+            graph.add_edge(new_node[0], n2)
         elif n2 in nodes:
-            graph.add_edge(n1,new_node[0])
+            graph.add_edge(n1, new_node[0])
