@@ -10,6 +10,7 @@ from p4 import p4
 from p5 import p5
 from p6 import p6
 from p9 import p9
+from p10 import p10
 
 
 class P1_Test(unittest.TestCase):
@@ -1495,6 +1496,82 @@ class P9_Test(unittest.TestCase):
         self.assertEqual(len(G.edges), len(edges))
         self.assertEqual(G.nodes[4]["label"], "I")
         self.assertEqual(G.nodes[5]["label"], "E")
+
+
+class P10_Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def _idealGraph(self):
+        nodes = [
+            (0, dict(label="i", x=0, y=0, level=0)),
+            (1, dict(label="i", x=1, y=1, level=0)),
+            (2, dict(label="E", x=1, y=0, level=0)),
+            (3, dict(label="E", x=0, y=1, level=0)),
+            (4, dict(label="I", x=1, y=0, level=1)),
+            (5, dict(label="I", x=1, y=0, level=1)),
+            (6, dict(label="I", x=1, y=1, level=1)),
+            (7, dict(label="E", x=1, y=0, level=1)),
+            (8, dict(label="E", x=1 / 2, y=1 / 2, level=1)),
+            (9, dict(label="E", x=0, y=1, level=1)),
+            (10, dict(label="E", x=1, y=0, level=1)),
+            (11, dict(label="E", x=0, y=1, level=1)),
+        ]
+
+        edges = [
+            (0, 2),
+            (0, 3),
+            (1, 2),
+            (1, 3),
+            (2, 3),
+            (0, 4),
+            (0, 5),
+            (1, 6),
+            (4, 7),
+            (4, 8),
+            (5, 8),
+            (5, 9),
+            (6, 10),
+            (6, 11),
+            (7, 8),
+            (8, 9),
+            (10, 11),
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+        return G
+
+    def test_should_merge_nodes_when_isomorphic_subgraph_found(self):
+        # given
+        level = 0
+        G = self._idealGraph()
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        # when
+        p10(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), nodes_len - 2)
+        self.assertEqual(len(G.edges), edge_len - 1)
+
+    def test_should_not_merge_nodes_when_isomorphic_subgraph_not_found(self):
+        # given
+        level = 0
+        G = self._idealGraph()
+        edge = next(iter(G.edges))
+        G.remove_edge(edge[0], edge[1])
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        # when
+        p10(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), nodes_len)
+        self.assertEqual(len(G.edges), edge_len)
 
 
 if __name__ == "__main__":
