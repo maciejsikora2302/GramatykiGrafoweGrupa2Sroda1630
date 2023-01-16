@@ -1498,25 +1498,24 @@ class P9_Test(unittest.TestCase):
         self.assertEqual(G.nodes[5]["label"], "E")
 
 
-
 class P10_Test(unittest.TestCase):
     def setUp(self):
         pass
 
     def _idealGraph(self):
         nodes = [
-            (0, dict(label='i', x=0, y=0, level=0)),
-            (1, dict(label='i', x=1, y=1, level=0)),
-            (2, dict(label='E', x=1, y=0, level=0)),
-            (3, dict(label='E', x=0, y=1, level=0)),
-            (4, dict(label='I', x=1, y=0, level=1)),
-            (5, dict(label='I', x=1, y=0, level=1)),
-            (6, dict(label='I', x=1, y=1, level=1)),
-            (7, dict(label='E', x=1, y=0, level=1)),
-            (8, dict(label='E', x=1 / 2, y=1 / 2, level=1)),
-            (9, dict(label='E', x=0, y=1, level=1)),
-            (10, dict(label='E', x=1, y=0, level=1)),
-            (11, dict(label='E', x=0, y=1, level=1))
+            (0, dict(label="i", x=0, y=0, level=0)),
+            (1, dict(label="i", x=1, y=1, level=0)),
+            (2, dict(label="E", x=1, y=0, level=0)),
+            (3, dict(label="E", x=0, y=1, level=0)),
+            (4, dict(label="I", x=1, y=0, level=1)),
+            (5, dict(label="I", x=1, y=0, level=1)),
+            (6, dict(label="I", x=1, y=1, level=1)),
+            (7, dict(label="E", x=1, y=0, level=1)),
+            (8, dict(label="E", x=1 / 2, y=1 / 2, level=1)),
+            (9, dict(label="E", x=0, y=1, level=1)),
+            (10, dict(label="E", x=1, y=0, level=1)),
+            (11, dict(label="E", x=0, y=1, level=1)),
         ]
 
         edges = [
