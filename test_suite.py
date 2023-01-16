@@ -1557,7 +1557,6 @@ class P10_Test(unittest.TestCase):
         self.assertEqual(len(G.nodes), nodes_len - 2)
         self.assertEqual(len(G.edges), edge_len - 1)
 
-
     def test_should_not_merge_nodes_when_isomorphic_subgraph_not_found(self):
         # given
         level = 0

@@ -52,7 +52,9 @@ def p10(graph: nx.Graph, level: int) -> None:
         {"node": 3, "constrained_equal_node": 11},
     ]
 
-    isomorphic_mapping = find_isomorphic_wrapper(graph, left_side_graph, level=level, constraints=constraints)
+    isomorphic_mapping = find_isomorphic_wrapper(
+        graph, left_side_graph, level=level, constraints=constraints
+    )
 
     if not isomorphic_mapping:
         return
