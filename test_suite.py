@@ -1503,7 +1503,7 @@ class P10_Test(unittest.TestCase):
     def setUp(self):
         pass
 
-    def _idealGraph(self, level):
+    def _idealGraph(self):
         nodes = [
             (0, dict(label='i', x=0, y=0, level=0)),
             (1, dict(label='i', x=1, y=1, level=0)),
@@ -1547,7 +1547,7 @@ class P10_Test(unittest.TestCase):
     def test_should_merge_nodes_when_isomorphic_subgraph_found(self):
         # given
         level = 0
-        G = self._idealGraph(level)
+        G = self._idealGraph()
         nodes_len = len(G.nodes)
         edge_len = len(G.edges)
 
@@ -1557,6 +1557,23 @@ class P10_Test(unittest.TestCase):
         # then
         self.assertEqual(len(G.nodes), nodes_len - 2)
         self.assertEqual(len(G.edges), edge_len - 1)
+
+
+    def test_should_not_merge_nodes_when_isomorphic_subgraph_not_found(self):
+        # given
+        level = 0
+        G = self._idealGraph()
+        edge = next(iter(G.edges))
+        G.remove_edge(edge[0], edge[1])
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        # when
+        p10(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), nodes_len)
+        self.assertEqual(len(G.edges), edge_len)
 
 
 if __name__ == "__main__":
