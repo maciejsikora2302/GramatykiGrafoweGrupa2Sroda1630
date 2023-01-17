@@ -49,12 +49,15 @@ def p2(graph: nx.Graph, level: int) -> None:
         for j in range(i + 1, len(X)):
             dist = ((X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2) ** 0.5
             if dist > longest_edge[0]:
-                longest_edge = (dist, i+1, j+1)
-    
+                longest_edge = (dist, i + 1, j + 1)
+
     # position node 1 opposite to the longest edge, then this edge lies between nodes 2 and 3
     # to achieve this, swap 1 with node that currently opposes the longest edge
-    opposite_node = 6 - longest_edge[1] - longest_edge[2]    # 1 + 2 + 3 = 6
-    isomorphic_mapping[1], isomorphic_mapping[opposite_node] = isomorphic_mapping[opposite_node], isomorphic_mapping[1]
+    opposite_node = 6 - longest_edge[1] - longest_edge[2]  # 1 + 2 + 3 = 6
+    isomorphic_mapping[1], isomorphic_mapping[opposite_node] = (
+        isomorphic_mapping[opposite_node],
+        isomorphic_mapping[1],
+    )
 
     # reassign attributes after permutting keys
     for t_node, g_node in isomorphic_mapping.items():
