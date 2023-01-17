@@ -35,10 +35,12 @@ def p2(graph: nx.Graph, level: int) -> None:
 
     X = []
     Y = []
+    node_added = []
     for _, node in isomorphic_mapping.items():
         if graph.nodes[node][Attribute.LABEL] == "E":
             X.append(graph.nodes[node][Attribute.X])
             Y.append(graph.nodes[node][Attribute.Y])
+<<<<<<< Updated upstream
 
     new_e_x = (X[0] + X[2]) / 2
     new_e_y = (Y[0] + Y[2]) / 2
@@ -46,6 +48,28 @@ def p2(graph: nx.Graph, level: int) -> None:
     Y.append(new_e_y)
 
     right_side_parent_node = (parent_tmp_node_number, dict(label="i"))
+=======
+            node_added.append(node)
+    
+    # calulate distance between all endes from X and Y
+    # and find the longest one
+    distance = []
+    for i in range(len(X)):
+        for j in range(i+1, len(X)):
+            dist = ((X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2) ** 0.5
+            distance.append((dist, i, j))
+    distance.sort(key=lambda x: x[0], reverse=True)
+    max_distance_i = distance[0][1]
+    max_distance_j = distance[0][2]
+
+    new_e_x = (X[max_distance_i] + X[max_distance_j]) / 2
+    new_e_y = (Y[max_distance_i] + Y[max_distance_j]) / 2
+    X.append(new_e_x)
+    Y.append(new_e_y)
+
+
+    right_side_parent_node = (parent_tmp_node_number, dict(label='i'))
+>>>>>>> Stashed changes
     right_side_nodes_new = [
         (1, dict(label="I", x=(X[0] + X[1] + X[2]) / 3, y=(Y[0] + Y[1] + Y[2]) / 3)),
         (2, dict(label="I", x=(X[1] + X[2] + X[3]) / 3, y=(Y[1] + Y[2] + Y[3]) / 3)),
@@ -58,6 +82,7 @@ def p2(graph: nx.Graph, level: int) -> None:
     right_side_nodes = [right_side_parent_node] + right_side_nodes_new
 
     right_side_edges = [
+<<<<<<< Updated upstream
         (3, 4),
         (3, 6),
         (3, 1),
@@ -69,7 +94,17 @@ def p2(graph: nx.Graph, level: int) -> None:
         (5, 6),
         (6, 1),
         (6, 2),
+=======
+        (3,4), (3,6), (3,5), (3,1), (4,5), (4,6), (4,1), (4,2), (5,2), (5,6), (6,1), (6,2),
+>>>>>>> Stashed changes
     ]
+
+    try:
+        right_side_edges.remove((node_added[max_distance_i], node_added[max_distance_j]))
+    except:
+        right_side_edges.remove((node_added[max_distance_j], node_added[max_distance_i]))
+
+    
 
     right_production_side = nx.Graph()
     right_production_side.add_nodes_from(right_side_nodes)

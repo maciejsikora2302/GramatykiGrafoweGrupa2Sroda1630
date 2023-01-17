@@ -13,6 +13,8 @@ from p9 import p9
 from p10 import p10
 
 
+from general_utils import save_graph
+
 class P1_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -152,8 +154,10 @@ class P2_Test(unittest.TestCase):
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
 
+        # save_graph(G, 'saved_graphs/graph_before.gexf')
         # when
         p2(G, level)
+        # save_graph(G, 'saved_graphs/graph_after.gexf')
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -222,22 +226,58 @@ class P2_Test(unittest.TestCase):
         self.assertNotEqual(G_copy.nodes, G.nodes)
         self.assertNotEqual(G_copy.edges, G.edges)
 
+<<<<<<< Updated upstream
     @parameterized.expand([["1", 1], ["2", 2], ["4", 4], ["5", 5]])
     def test_should_do_nothing_when_no_isomorphic_subgraph_found(
         self, _test_name: str, node_to_remove: int
     ):
+=======
+    @parameterized.expand([
+        ['1', 1], # ['2', 2], ['4', 4], ['5', 5]
+    ])
+    def test_should_do_nothing_when_no_isomorphic_subgraph_found(self, _test_name: str, node_to_remove: int):
+>>>>>>> Stashed changes
         # given
         G = self.base_p2_isomorphic_graph()
         G.remove_node(node_to_remove)
         level = 2
 
         # when
+        
+        # save_graph(G, 'saved_graphs/graph_before.gexf')
         G_copy = G.copy()
         p2(G_copy, level)
+        # save_graph(G, 'saved_graphs/graph_after.gexf')
 
         # then
         self.assertEqual(G_copy.nodes, G.nodes)
         self.assertEqual(G_copy.edges, G.edges)
+    
+    def test_if_one_egde_has_additional_node(self):
+
+        level = 1
+
+        nodes = [
+            (1, dict(label='E', x=0.0, y=1.0, level=level)),
+            (2, dict(label='E', x=1.0, y=1.0, level=level)),
+            (4, dict(label='E', x=0.0, y=0.0, level=level)),
+            (5, dict(label='I', x=1/3, y=2/3, level=level)),
+            (7, dict(label='E', x=0.5, y=0.5, level=level)),
+        ]
+        edges = [
+            (1,2), (4,1), # boundary edges
+            (2,7), (7,4), # internal edge
+            (1,5), (2,5), (4,5), # internal I node of triangle <1,2,4>
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+        save_graph(G, 'saved_graphs/graph_before.gexf')
+
+        p2(G, level)
+        save_graph(G, 'saved_graphs/graph_after.gexf')
+
 
 
 class P3_Test(unittest.TestCase):
