@@ -6,7 +6,7 @@ from general_utils import Attribute
 def p2(graph: nx.Graph, level: int) -> None:
     left_production_side_graph = nx.Graph()
 
-    parent_tmp_node_number = 0
+    parent_tmp_node_number = 2137
     left_production_side_graph.add_nodes_from(
         [
             (parent_tmp_node_number, dict(label="I")),
