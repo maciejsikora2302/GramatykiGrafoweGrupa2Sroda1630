@@ -15,12 +15,14 @@ def create_folder_tree(path):
     path = os.path.dirname(path)
     if not os.path.exists(path):
         os.makedirs(path)
-        
+
+
 def debug_print(graph: nx.Graph):
     print(graph)
     for node in graph.nodes:
         print(node, graph.nodes[node])
-    print("="*100)
+    print("=" * 100)
+
 
 def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") -> None:
     # debug_print(graph)

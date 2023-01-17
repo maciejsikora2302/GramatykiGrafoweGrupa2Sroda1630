@@ -128,7 +128,7 @@ def add_to_graph(
     parent_tmp_node_number = right_side_parent_node[0]
 
     n = len(graph.nodes)
-    #find max node number in graph
+    # find max node number in graph
     for node in graph.nodes:
         n = max(n, node)
     # print(f"n = {n}")
@@ -167,7 +167,6 @@ def add_to_graph(
     )
 
     existing_node_parent = graph.nodes[isomorphic_mapping[parent_tmp_node_number]]
-
 
     for node in right_side_nodes_mapped:
         node[1][Attribute.LEVEL] = existing_node_parent[Attribute.LEVEL] + 1
