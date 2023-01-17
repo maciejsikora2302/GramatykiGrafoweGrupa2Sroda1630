@@ -3,11 +3,13 @@ from copy import copy
 import matplotlib.pyplot as plt
 import os
 
+
 class Attribute:
     LEVEL = "level"
     LABEL = "label"
     X = "x"
     Y = "y"
+
 
 def create_folder_tree(path):
     path = os.path.dirname(path)
