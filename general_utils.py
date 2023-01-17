@@ -90,6 +90,7 @@ def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") ->
 
 def save_graph(graph: nx.Graph, filename: str):
     # add attribute to all nodes
+    create_folder_tree(filename)
     for node in graph.nodes:
         graph.nodes[node]["node_type"] = graph.nodes[node][Attribute.LABEL]
     nx.write_gexf(graph, filename)
