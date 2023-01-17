@@ -28,10 +28,12 @@ from general_utils import draw, save_graph
 
 from p1 import p1
 from p2 import p2
-from p3 import p3
-from p4 import p4
+from p9 import p9
+from p10 import p10
+from p12 import p12
 
-if __name__ == "__main__":
+
+def old_main():
     graph = nx.Graph()
     graph.add_node(0, label="El", x=0.5, y=0.5, level=0)
 
@@ -44,3 +46,36 @@ if __name__ == "__main__":
     draw(graph, filename="./dev_draw/after_3.png")
 
     save_graph(graph, "saved_graphs/graph.gexf")
+
+
+def wywod_1():
+    graph = nx.Graph()
+    graph.add_node(0, label="El", x=0.5, y=0.5, level=0)
+    draw(graph, filename="./wywod_1_draw/init.png")
+
+    p1(graph, 0)
+    draw(graph, filename="./wywod_1_draw/step_1.png")
+
+    p9(graph, 1)
+    draw(graph, filename="./wywod_1_draw/step_2.png")
+
+    p9(graph, 1)
+    draw(graph, filename="./wywod_1_draw/step_3.png")
+
+    p12(graph, 1)
+    draw(graph, filename="./wywod_1_draw/step_4.png")
+
+    p2(graph, 2)
+    draw(graph, filename="./wywod_1_draw/step_5.png")
+
+    p9(graph, 2)
+    draw(graph, filename="./wywod_1_draw/step_6.png")
+
+    p10(graph, 2)
+    draw(graph, filename="./wywod_1_draw/step_7.png")
+
+    save_graph(graph, "saved_graphs/graph.gexf")
+
+
+if __name__ == "__main__":
+    wywod_1()
