@@ -6,7 +6,7 @@ from general_utils import Attribute
 def p2(graph: nx.Graph, level: int) -> None:
     left_production_side_graph = nx.Graph()
 
-    parent_tmp_node_number = 8
+    parent_tmp_node_number = 0
     left_production_side_graph.add_nodes_from(
         [
             (parent_tmp_node_number, dict(label="I")),
@@ -29,6 +29,8 @@ def p2(graph: nx.Graph, level: int) -> None:
     isomorphic_mapping = find_isomorphic_wrapper(
         graph, left_production_side_graph, level=level
     )
+
+    # print(isomorphic_mapping)
 
     if not isomorphic_mapping:
         return
@@ -74,23 +76,28 @@ def p2(graph: nx.Graph, level: int) -> None:
         (3, 4),
         (3, 6),
         (3, 5),
-        (3, 1),
         (4, 5),
         (4, 6),
+        (5, 6),
+
+        (3, 1),
+        (5, 2),
+
         (4, 1),
         (4, 2),
-        (5, 2),
-        (5, 6),
+
         (6, 1),
         (6, 2),
     ]
 
 
     if (node_added[max_distance_i], node_added[max_distance_j]) in right_side_edges:
+        # print((node_added[max_distance_i], node_added[max_distance_j]))
         right_side_edges.remove(
             (node_added[max_distance_i], node_added[max_distance_j])
         )
     elif (node_added[max_distance_j], node_added[max_distance_i]) in right_side_edges:
+        # print((node_added[max_distance_j], node_added[max_distance_i]))
         right_side_edges.remove(
             (node_added[max_distance_j], node_added[max_distance_i])
         )
@@ -99,6 +106,10 @@ def p2(graph: nx.Graph, level: int) -> None:
     right_production_side = nx.Graph()
     right_production_side.add_nodes_from(right_side_nodes)
     right_production_side.add_edges_from(right_side_edges)
+
+    # from pprint import pprint as pp
+    # for node in right_side_nodes:
+    #     pp(node)
 
     add_to_graph(
         graph,

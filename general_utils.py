@@ -14,8 +14,15 @@ def create_folder_tree(path):
     if not os.path.exists(path):
         os.makedirs(path)
         
+def debug_print(graph: nx.Graph):
+    print(graph)
+    for node in graph.nodes:
+        print(node, graph.nodes[node])
+    print("="*100)
 
 def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") -> None:
+    # debug_print(graph)
+
     create_folder_tree(filename)
 
     if level is not None:
@@ -88,9 +95,12 @@ def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") ->
     plt.clf()
 
 
-def save_graph(graph: nx.Graph, filename: str):
+def save_graph(g: nx.Graph, filename: str):
     # add attribute to all nodes
+    graph = g.copy()
     create_folder_tree(filename)
     for node in graph.nodes:
         graph.nodes[node]["node_type"] = graph.nodes[node][Attribute.LABEL]
+        graph.nodes[node][Attribute.X] += graph.nodes[node][Attribute.LEVEL] * 50
+        graph.nodes[node][Attribute.Y] += graph.nodes[node][Attribute.LEVEL] * 50
     nx.write_gexf(graph, filename)
