@@ -2,7 +2,7 @@ import networkx as nx
 from graph_functions import *
 
 
-def p1(graph: nx.Graph, level: int, low: float = 1.0, high: float = 40.0):
+def p1(graph: nx.Graph, level: int, low: float = 0.0, high: float = 1.0):
     left_production_side_graph = nx.Graph()
     parent_tmp_node_number = 8
 
