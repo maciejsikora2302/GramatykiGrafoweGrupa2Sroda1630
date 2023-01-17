@@ -3,17 +3,19 @@ from copy import copy
 import matplotlib.pyplot as plt
 import os
 
+
 class Attribute:
     LEVEL = "level"
     LABEL = "label"
     X = "x"
     Y = "y"
 
+
 def create_folder_tree(path):
     path = os.path.dirname(path)
     if not os.path.exists(path):
         os.makedirs(path)
-        
+
 
 def draw(graph: nx.Graph, level: int = None, filename: str = "test_draw.png") -> None:
     create_folder_tree(filename)

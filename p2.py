@@ -85,7 +85,6 @@ def p2(graph: nx.Graph, level: int) -> None:
         (6, 2),
     ]
 
-
     if (node_added[max_distance_i], node_added[max_distance_j]) in right_side_edges:
         right_side_edges.remove(
             (node_added[max_distance_i], node_added[max_distance_j])
@@ -95,7 +94,6 @@ def p2(graph: nx.Graph, level: int) -> None:
             (node_added[max_distance_j], node_added[max_distance_i])
         )
 
-    
     right_production_side = nx.Graph()
     right_production_side.add_nodes_from(right_side_nodes)
     right_production_side.add_edges_from(right_side_edges)
