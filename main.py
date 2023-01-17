@@ -50,28 +50,37 @@ def old_main():
 
 def wywod_1():
     graph = nx.Graph()
-    graph.add_node(0, label="El", x=0.5, y=0.5, level=0)
+    LOW = 1.0
+    HIGH = 40.0
+    graph.add_node(0, label="El", x=0.0, y=0.0, level=0)
     draw(graph, filename="./wywod_1_draw/init.png")
 
     p1(graph, 0)
+    print("p1 done")
     draw(graph, filename="./wywod_1_draw/step_1.png")
 
     p9(graph, 1)
+    print("p9 done")
     draw(graph, filename="./wywod_1_draw/step_2.png")
 
     p9(graph, 1)
+    print("p9 done")
     draw(graph, filename="./wywod_1_draw/step_3.png")
 
     p12(graph, 1)
+    print("p12 done")
     draw(graph, filename="./wywod_1_draw/step_4.png")
 
     p2(graph, 2)
+    print("p2 done")
     draw(graph, filename="./wywod_1_draw/step_5.png")
 
     p9(graph, 2)
+    print("p9 done")
     draw(graph, filename="./wywod_1_draw/step_6.png")
 
     p10(graph, 2)
+    print("p10 done")
     draw(graph, filename="./wywod_1_draw/step_7.png")
 
     save_graph(graph, "saved_graphs/graph.gexf")
