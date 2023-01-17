@@ -3,4 +3,6 @@ __pycache__/
 .idea
 
 /dev_draw
-/saved_graphs
+/saved_graphs/*
+
+/wywod_1_draw
