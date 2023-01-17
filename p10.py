@@ -70,12 +70,12 @@ def p10(graph: nx.Graph, level: int) -> None:
     merge_nodes(
         graph,
         [isomorphic_mapping[7], isomorphic_mapping[10]],
-        (isomorphic_mapping[7], dict(label="E", x=X[7], y=Y[7], level=levels[7])),
+        (isomorphic_mapping[7], dict(label="E", x=X[6], y=Y[6], level=levels[6])),
     )
     merge_nodes(
         graph,
         [isomorphic_mapping[9], isomorphic_mapping[11]],
-        (isomorphic_mapping[9], dict(label="E", x=X[9], y=Y[9], level=levels[9])),
+        (isomorphic_mapping[9], dict(label="E", x=X[8], y=Y[8], level=levels[8])),
     )
 
     graph.remove_edge(isomorphic_mapping[7], isomorphic_mapping[9])
