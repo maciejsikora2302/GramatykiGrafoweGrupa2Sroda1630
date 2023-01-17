@@ -40,15 +40,6 @@ def p2(graph: nx.Graph, level: int) -> None:
         if graph.nodes[node][Attribute.LABEL] == "E":
             X.append(graph.nodes[node][Attribute.X])
             Y.append(graph.nodes[node][Attribute.Y])
-<<<<<<< Updated upstream
-
-    new_e_x = (X[0] + X[2]) / 2
-    new_e_y = (Y[0] + Y[2]) / 2
-    X.append(new_e_x)
-    Y.append(new_e_y)
-
-    right_side_parent_node = (parent_tmp_node_number, dict(label="i"))
-=======
             node_added.append(node)
     
     # calulate distance between all endes from X and Y
@@ -69,7 +60,6 @@ def p2(graph: nx.Graph, level: int) -> None:
 
 
     right_side_parent_node = (parent_tmp_node_number, dict(label='i'))
->>>>>>> Stashed changes
     right_side_nodes_new = [
         (1, dict(label="I", x=(X[0] + X[1] + X[2]) / 3, y=(Y[0] + Y[1] + Y[2]) / 3)),
         (2, dict(label="I", x=(X[1] + X[2] + X[3]) / 3, y=(Y[1] + Y[2] + Y[3]) / 3)),
@@ -82,21 +72,7 @@ def p2(graph: nx.Graph, level: int) -> None:
     right_side_nodes = [right_side_parent_node] + right_side_nodes_new
 
     right_side_edges = [
-<<<<<<< Updated upstream
-        (3, 4),
-        (3, 6),
-        (3, 1),
-        (4, 5),
-        (4, 6),
-        (4, 1),
-        (4, 2),
-        (5, 2),
-        (5, 6),
-        (6, 1),
-        (6, 2),
-=======
         (3,4), (3,6), (3,5), (3,1), (4,5), (4,6), (4,1), (4,2), (5,2), (5,6), (6,1), (6,2),
->>>>>>> Stashed changes
     ]
 
     try:

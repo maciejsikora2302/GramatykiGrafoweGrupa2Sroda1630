@@ -33,7 +33,9 @@ class P1_Test(unittest.TestCase):
         # when
         LOW = 1.0
         HIGH = 40.0
+        save_graph(G, "saved_graphs/p1_1_before.gexf")
         p1(G, level, LOW, HIGH)
+        save_graph(G, "saved_graphs/p1_1_after.gexf")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -79,7 +81,9 @@ class P1_Test(unittest.TestCase):
         # when
         LOW = 1.0
         HIGH = 40.0
+        save_graph(G, "saved_graphs/p1_2_before.gexf")
         p1(G, level, LOW, HIGH)
+        save_graph(G, "saved_graphs/p1_2_after.gexf")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -118,13 +122,16 @@ class P2_Test(unittest.TestCase):
         # given
         level = 2
 
+        LOW = 1.0
+        HIGH = 40.0
+
         nodes = [
-            (1, dict(label="E", x=0.0, y=1.0, level=level)),
-            (2, dict(label="E", x=1.0, y=1.0, level=level)),
-            (3, dict(label="E", x=1.0, y=0.0, level=level)),
-            (4, dict(label="E", x=0.0, y=0.0, level=level)),
-            (5, dict(label="I", x=1 / 3, y=2 / 3, level=level)),
-            (6, dict(label="I", x=2 / 3, y=1 / 3, level=level)),
+            (1, dict(label="E", x=LOW, y=HIGH, level=level)),
+            (2, dict(label="E", x=HIGH, y=HIGH, level=level)),
+            (3, dict(label="E", x=HIGH, y=LOW, level=level)),
+            (4, dict(label="E", x=LOW, y=LOW, level=level)),
+            (5, dict(label="I", x=HIGH / 3, y=2*HIGH / 3, level=level)),
+            (6, dict(label="I", x=2*HIGH / 3, y=HIGH / 3, level=level)),
         ]
         edges = [
             (1, 2),
@@ -141,9 +148,9 @@ class P2_Test(unittest.TestCase):
         ]
 
         # add couple of nodes to  nodes list
-        nodes.append((7, dict(label="E", x=0.0, y=1.0, level=level)))
-        nodes.append((8, dict(label="E", x=1.0, y=1.0, level=level)))
-        nodes.append((9, dict(label="E", x=1.0, y=0.0, level=level)))
+        nodes.append((7, dict(label="E", x=LOW, y=HIGH, level=level)))
+        nodes.append((8, dict(label="E", x=HIGH, y=HIGH, level=level)))
+        nodes.append((9, dict(label="E", x=HIGH, y=LOW, level=level)))
 
         # and edges between them
         edges.append((7, 8))
@@ -154,10 +161,12 @@ class P2_Test(unittest.TestCase):
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
 
-        # save_graph(G, 'saved_graphs/graph_before.gexf')
+        # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         # when
+        save_graph(G, "saved_graphs/p2_1_before.gexf")
         p2(G, level)
-        # save_graph(G, 'saved_graphs/graph_after.gexf')
+        save_graph(G, "saved_graphs/p2_1_after.gexf")
+        # save_graph(G, 'saved_graphs/graph_after.gexf.gexf')
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -177,25 +186,28 @@ class P2_Test(unittest.TestCase):
         self.assertEqual(G.nodes[11]["label"], "I")
 
         # check coordinates
-        self.assertEqual(G.nodes[5]["x"], 1 / 3)
-        self.assertEqual(G.nodes[5]["y"], 2 / 3)
-        self.assertEqual(G.nodes[6]["x"], 2 / 3)
-        self.assertEqual(G.nodes[6]["y"], 1 / 3)
-        self.assertEqual(G.nodes[10]["x"], 1 / 3)
-        self.assertEqual(G.nodes[10]["y"], 2 / 3)
-        self.assertEqual(G.nodes[11]["x"], 1 / 3)
-        self.assertEqual(G.nodes[11]["y"], 1 / 2)
+        self.assertEqual(G.nodes[5]["x"], 1*HIGH / 3)
+        self.assertEqual(G.nodes[5]["y"], 2*HIGH / 3)
+        self.assertEqual(G.nodes[6]["x"], 2*HIGH / 3)
+        self.assertEqual(G.nodes[6]["y"], 1*HIGH / 3)
+        self.assertEqual(G.nodes[10]["x"], (HIGH+LOW+LOW) / 3)
+        self.assertEqual(G.nodes[10]["y"], (2*HIGH+LOW) / 3)
+        self.assertEqual(G.nodes[11]["x"], (HIGH+LOW) / 2)
+        self.assertEqual(G.nodes[11]["y"], (HIGH+LOW) / 2)
 
     def base_p2_isomorphic_graph(self):
         # given
         level = 2
 
+        LOW = 1.0
+        HIGH = 40.0
+
         nodes = [
-            (1, dict(label="E", x=0.0, y=1.0, level=level)),
-            (2, dict(label="E", x=1.0, y=1.0, level=level)),
-            (4, dict(label="E", x=0.0, y=0.0, level=level)),
-            (5, dict(label="I", x=1 / 3, y=2 / 3, level=level)),
-            (6, dict(label="I", x=2 / 3, y=1 / 3, level=level)),
+            (1, dict(label="E", x=LOW, y=HIGH, level=level)),
+            (2, dict(label="E", x=HIGH, y=HIGH, level=level)),
+            (4, dict(label="E", x=LOW, y=LOW, level=level)),
+            (5, dict(label="I", x=HIGH / 3, y=2*HIGH / 3, level=level)),
+            (6, dict(label="I", x=2*HIGH / 3, y=HIGH / 3, level=level)),
         ]
         edges = [
             (1, 2),
@@ -220,23 +232,18 @@ class P2_Test(unittest.TestCase):
 
         # when
         G_copy = G.copy()
+        save_graph(G_copy, "saved_graphs/p2_2_before.gexf")
         p2(G_copy, level)
+        save_graph(G_copy, "saved_graphs/p2_2_after.gexf")
 
         # then
         self.assertNotEqual(G_copy.nodes, G.nodes)
         self.assertNotEqual(G_copy.edges, G.edges)
 
-<<<<<<< Updated upstream
     @parameterized.expand([["1", 1], ["2", 2], ["4", 4], ["5", 5]])
     def test_should_do_nothing_when_no_isomorphic_subgraph_found(
         self, _test_name: str, node_to_remove: int
     ):
-=======
-    @parameterized.expand([
-        ['1', 1], # ['2', 2], ['4', 4], ['5', 5]
-    ])
-    def test_should_do_nothing_when_no_isomorphic_subgraph_found(self, _test_name: str, node_to_remove: int):
->>>>>>> Stashed changes
         # given
         G = self.base_p2_isomorphic_graph()
         G.remove_node(node_to_remove)
@@ -244,10 +251,12 @@ class P2_Test(unittest.TestCase):
 
         # when
         
-        # save_graph(G, 'saved_graphs/graph_before.gexf')
+        # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         G_copy = G.copy()
+        save_graph(G_copy.copy(), "saved_graphs/p2_3_before.gexf")
         p2(G_copy, level)
-        # save_graph(G, 'saved_graphs/graph_after.gexf')
+        save_graph(G_copy.copy(), "saved_graphs/p2_3_after.gexf")
+        # save_graph(G, 'saved_graphs/graph_after.gexf.gexf')
 
         # then
         self.assertEqual(G_copy.nodes, G.nodes)
@@ -257,12 +266,15 @@ class P2_Test(unittest.TestCase):
 
         level = 1
 
+        LOW = 1.0
+        HIGH = 40.0
+
         nodes = [
-            (1, dict(label='E', x=0.0, y=1.0, level=level)),
-            (2, dict(label='E', x=1.0, y=1.0, level=level)),
-            (4, dict(label='E', x=0.0, y=0.0, level=level)),
-            (5, dict(label='I', x=1/3, y=2/3, level=level)),
-            (7, dict(label='E', x=0.5, y=0.5, level=level)),
+            (1, dict(label='E', x=LOW, y=HIGH, level=level)),
+            (2, dict(label='E', x=HIGH, y=HIGH, level=level)),
+            (4, dict(label='E', x=LOW, y=LOW, level=level)),
+            (5, dict(label='I', x=HIGH/3, y=2*HIGH/3, level=level)),
+            (7, dict(label='E', x=HIGH/2, y=HIGH/2, level=level)),
         ]
         edges = [
             (1,2), (4,1), # boundary edges
@@ -273,10 +285,13 @@ class P2_Test(unittest.TestCase):
         G = nx.Graph()
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
-        save_graph(G, 'saved_graphs/graph_before.gexf')
 
-        p2(G, level)
-        save_graph(G, 'saved_graphs/graph_after.gexf')
+        G_copy = G.copy()
+
+        save_graph(G_copy, 'saved_graphs/p2_4_before.gexf')
+        p2(G_copy, level)
+        save_graph(G_copy, 'saved_graphs/p2_4_after.gexf')
+
 
 
 
