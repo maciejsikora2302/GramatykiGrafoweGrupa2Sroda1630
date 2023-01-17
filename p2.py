@@ -35,13 +35,26 @@ def p2(graph: nx.Graph, level: int) -> None:
 
     X = []
     Y = []
+    node_added = []
     for _, node in isomorphic_mapping.items():
         if graph.nodes[node][Attribute.LABEL] == "E":
             X.append(graph.nodes[node][Attribute.X])
             Y.append(graph.nodes[node][Attribute.Y])
+            node_added.append(node)
 
-    new_e_x = (X[0] + X[2]) / 2
-    new_e_y = (Y[0] + Y[2]) / 2
+    # calulate distance between all endes from X and Y
+    # and find the longest one
+    distance = []
+    for i in range(len(X)):
+        for j in range(i + 1, len(X)):
+            dist = ((X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2) ** 0.5
+            distance.append((dist, i, j))
+    distance.sort(key=lambda x: x[0], reverse=True)
+    max_distance_i = distance[0][1]
+    max_distance_j = distance[0][2]
+
+    new_e_x = (X[max_distance_i] + X[max_distance_j]) / 2
+    new_e_y = (Y[max_distance_i] + Y[max_distance_j]) / 2
     X.append(new_e_x)
     Y.append(new_e_y)
 
@@ -60,6 +73,7 @@ def p2(graph: nx.Graph, level: int) -> None:
     right_side_edges = [
         (3, 4),
         (3, 6),
+        (3, 5),
         (3, 1),
         (4, 5),
         (4, 6),
@@ -70,6 +84,15 @@ def p2(graph: nx.Graph, level: int) -> None:
         (6, 1),
         (6, 2),
     ]
+
+    try:
+        right_side_edges.remove(
+            (node_added[max_distance_i], node_added[max_distance_j])
+        )
+    except:
+        right_side_edges.remove(
+            (node_added[max_distance_j], node_added[max_distance_i])
+        )
 
     right_production_side = nx.Graph()
     right_production_side.add_nodes_from(right_side_nodes)
