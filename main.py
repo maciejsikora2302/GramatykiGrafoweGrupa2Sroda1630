@@ -47,6 +47,7 @@ def old_main():
 
     save_graph(graph, "saved_graphs/graph.gexf")
 
+
 def wywod_1():
     graph = nx.Graph()
     graph.add_node(0, label="El", x=0.5, y=0.5, level=0)
@@ -57,19 +58,19 @@ def wywod_1():
 
     p9(graph, 1)
     draw(graph, filename="./wywod_1_draw/step_2.png")
-    
+
     p9(graph, 1)
     draw(graph, filename="./wywod_1_draw/step_3.png")
-    
+
     p12(graph, 1)
     draw(graph, filename="./wywod_1_draw/step_4.png")
-    
+
     p2(graph, 2)
     draw(graph, filename="./wywod_1_draw/step_5.png")
-    
+
     p9(graph, 2)
     draw(graph, filename="./wywod_1_draw/step_6.png")
-    
+
     p10(graph, 2)
     draw(graph, filename="./wywod_1_draw/step_7.png")
 

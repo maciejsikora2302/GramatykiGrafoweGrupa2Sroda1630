@@ -1574,6 +1574,7 @@ class P10_Test(unittest.TestCase):
         self.assertEqual(len(G.nodes), nodes_len)
         self.assertEqual(len(G.edges), edge_len)
 
+
 class P12_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -1599,11 +1600,9 @@ class P12_Test(unittest.TestCase):
             (1, 2),
             (1, 3),
             (2, 3),
-
             # connections between layers
             (0, 4),
             (1, 5),
-
             # bottom layer
             ## left triangle
             (4, 7),

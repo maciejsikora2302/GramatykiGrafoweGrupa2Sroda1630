@@ -29,11 +29,9 @@ def p12(graph: nx.Graph, level: int) -> None:
             (1, 2),
             (1, 3),
             (2, 3),
-
             # connections between layers
             (0, 4),
             (1, 5),
-
             # bottom layer
             ## left triangle
             (4, 7),
