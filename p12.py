@@ -68,6 +68,8 @@ def p12(graph: nx.Graph, level: int) -> None:
         Y[t_node - 1] = graph.nodes[g_node][Attribute.Y]
         levels[t_node - 1] = graph.nodes[g_node][Attribute.LEVEL]
 
+    graph.remove_edge(isomorphic_mapping[6], isomorphic_mapping[7])
+
     merge_nodes(
         graph,
         [isomorphic_mapping[6], isomorphic_mapping[8]],
@@ -78,5 +80,3 @@ def p12(graph: nx.Graph, level: int) -> None:
         [isomorphic_mapping[7], isomorphic_mapping[9]],
         (isomorphic_mapping[7], dict(label="E", x=X[7], y=Y[7], level=levels[7])),
     )
-
-    graph.remove_edge(isomorphic_mapping[6], isomorphic_mapping[7])
