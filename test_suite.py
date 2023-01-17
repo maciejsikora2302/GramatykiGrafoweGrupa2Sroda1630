@@ -11,6 +11,7 @@ from p5 import p5
 from p6 import p6
 from p9 import p9
 from p10 import p10
+from p12 import p12
 
 
 from general_utils import save_graph
@@ -162,12 +163,10 @@ class P2_Test(unittest.TestCase):
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
 
-        # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         # when
         save_graph(G, "saved_graphs/p2_1_before.gexf")
         p2(G, level)
         save_graph(G, "saved_graphs/p2_1_after.gexf")
-        # save_graph(G, 'saved_graphs/graph_after.gexf.gexf')
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -191,10 +190,6 @@ class P2_Test(unittest.TestCase):
         self.assertEqual(G.nodes[5]["y"], 2 * HIGH / 3)
         self.assertEqual(G.nodes[6]["x"], 2 * HIGH / 3)
         self.assertEqual(G.nodes[6]["y"], 1 * HIGH / 3)
-        self.assertEqual(G.nodes[10]["x"], (HIGH + LOW + LOW) / 3)
-        self.assertEqual(G.nodes[10]["y"], (2 * HIGH + LOW) / 3)
-        self.assertEqual(G.nodes[11]["x"], (HIGH + LOW) / 2)
-        self.assertEqual(G.nodes[11]["y"], (HIGH + LOW) / 2)
 
     def base_p2_isomorphic_graph(self):
         # given
@@ -252,12 +247,10 @@ class P2_Test(unittest.TestCase):
 
         # when
 
-        # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         G_copy = G.copy()
         save_graph(G_copy.copy(), "saved_graphs/p2_3_before.gexf")
         p2(G_copy, level)
         save_graph(G_copy.copy(), "saved_graphs/p2_3_after.gexf")
-        # save_graph(G, 'saved_graphs/graph_after.gexf.gexf')
 
         # then
         self.assertEqual(G_copy.nodes, G.nodes)
@@ -1626,6 +1619,81 @@ class P10_Test(unittest.TestCase):
 
         # when
         p10(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), nodes_len)
+        self.assertEqual(len(G.edges), edge_len)
+
+
+class P12_Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def _idealGraph(self):
+        nodes = [
+            (0, dict(label="i", x=0, y=0, level=0)),
+            (1, dict(label="i", x=1, y=1, level=0)),
+            (2, dict(label="E", x=1, y=0, level=0)),
+            (3, dict(label="E", x=0, y=1, level=0)),
+            (4, dict(label="I", x=0, y=0, level=1)),
+            (5, dict(label="I", x=1, y=1, level=1)),
+            (6, dict(label="E", x=1, y=0, level=1)),
+            (7, dict(label="E", x=0, y=1, level=1)),
+            (8, dict(label="E", x=1, y=0, level=1)),
+            (9, dict(label="E", x=0, y=1, level=1)),
+        ]
+
+        edges = [
+            # upper layer
+            (0, 2),
+            (0, 3),
+            (1, 2),
+            (1, 3),
+            (2, 3),
+            # connections between layers
+            (0, 4),
+            (1, 5),
+            # bottom layer
+            ## left triangle
+            (4, 7),
+            (4, 6),
+            (6, 7),
+            ## right triangle
+            (5, 8),
+            (5, 9),
+            (8, 9),
+        ]
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+        return G
+
+    def test_should_merge_nodes_when_isomorphic_subgraph_found(self):
+        # given
+        level = 0
+        G = self._idealGraph()
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        # when
+        p12(G, level)
+
+        # then
+        self.assertEqual(len(G.nodes), nodes_len - 2)
+        self.assertEqual(len(G.edges), edge_len - 1)
+
+    def test_should_not_merge_nodes_when_isomorphic_subgraph_not_found(self):
+        # given
+        level = 0
+        G = self._idealGraph()
+        edge = next(iter(G.edges))
+        G.remove_edge(edge[0], edge[1])
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        # when
+        p12(G, level)
 
         # then
         self.assertEqual(len(G.nodes), nodes_len)

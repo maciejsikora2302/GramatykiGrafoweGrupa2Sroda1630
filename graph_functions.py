@@ -1,7 +1,7 @@
 import networkx as nx
 import typing
 import numpy as np
-from general_utils import Attribute, draw
+from general_utils import Attribute
 from pprint import pprint as pp
 
 
@@ -100,7 +100,6 @@ def find_isomorphic_wrapper(
             else:
                 raise Exception("Invalid constraint")
 
-        # pp(checked_constraints)
         return all(checked_constraints)
 
     initially_found = find_isomporphic(graph, left_side_graph, level)
@@ -126,6 +125,10 @@ def add_to_graph(
     parent_tmp_node_number = right_side_parent_node[0]
 
     n = len(graph.nodes)
+    # find max node number in graph
+    for node in graph.nodes:
+        n = max(n, node)
+
     right_side_nodes_mapping = {
         node[0]: node[0] + n for node in right_side_nodes_new
     }  # define a dictionay mapping old node number (based on right_side_nodes ) => graph node.
