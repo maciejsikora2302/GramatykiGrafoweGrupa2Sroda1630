@@ -15,6 +15,7 @@ from p10 import p10
 
 from general_utils import save_graph
 
+
 class P1_Test(unittest.TestCase):
     def setUp(self):
         pass
@@ -130,8 +131,8 @@ class P2_Test(unittest.TestCase):
             (2, dict(label="E", x=HIGH, y=HIGH, level=level)),
             (3, dict(label="E", x=HIGH, y=LOW, level=level)),
             (4, dict(label="E", x=LOW, y=LOW, level=level)),
-            (5, dict(label="I", x=HIGH / 3, y=2*HIGH / 3, level=level)),
-            (6, dict(label="I", x=2*HIGH / 3, y=HIGH / 3, level=level)),
+            (5, dict(label="I", x=HIGH / 3, y=2 * HIGH / 3, level=level)),
+            (6, dict(label="I", x=2 * HIGH / 3, y=HIGH / 3, level=level)),
         ]
         edges = [
             (1, 2),
@@ -186,14 +187,14 @@ class P2_Test(unittest.TestCase):
         self.assertEqual(G.nodes[11]["label"], "I")
 
         # check coordinates
-        self.assertEqual(G.nodes[5]["x"], 1*HIGH / 3)
-        self.assertEqual(G.nodes[5]["y"], 2*HIGH / 3)
-        self.assertEqual(G.nodes[6]["x"], 2*HIGH / 3)
-        self.assertEqual(G.nodes[6]["y"], 1*HIGH / 3)
-        self.assertEqual(G.nodes[10]["x"], (HIGH+LOW+LOW) / 3)
-        self.assertEqual(G.nodes[10]["y"], (2*HIGH+LOW) / 3)
-        self.assertEqual(G.nodes[11]["x"], (HIGH+LOW) / 2)
-        self.assertEqual(G.nodes[11]["y"], (HIGH+LOW) / 2)
+        self.assertEqual(G.nodes[5]["x"], 1 * HIGH / 3)
+        self.assertEqual(G.nodes[5]["y"], 2 * HIGH / 3)
+        self.assertEqual(G.nodes[6]["x"], 2 * HIGH / 3)
+        self.assertEqual(G.nodes[6]["y"], 1 * HIGH / 3)
+        self.assertEqual(G.nodes[10]["x"], (HIGH + LOW + LOW) / 3)
+        self.assertEqual(G.nodes[10]["y"], (2 * HIGH + LOW) / 3)
+        self.assertEqual(G.nodes[11]["x"], (HIGH + LOW) / 2)
+        self.assertEqual(G.nodes[11]["y"], (HIGH + LOW) / 2)
 
     def base_p2_isomorphic_graph(self):
         # given
@@ -206,8 +207,8 @@ class P2_Test(unittest.TestCase):
             (1, dict(label="E", x=LOW, y=HIGH, level=level)),
             (2, dict(label="E", x=HIGH, y=HIGH, level=level)),
             (4, dict(label="E", x=LOW, y=LOW, level=level)),
-            (5, dict(label="I", x=HIGH / 3, y=2*HIGH / 3, level=level)),
-            (6, dict(label="I", x=2*HIGH / 3, y=HIGH / 3, level=level)),
+            (5, dict(label="I", x=HIGH / 3, y=2 * HIGH / 3, level=level)),
+            (6, dict(label="I", x=2 * HIGH / 3, y=HIGH / 3, level=level)),
         ]
         edges = [
             (1, 2),
@@ -250,7 +251,7 @@ class P2_Test(unittest.TestCase):
         level = 2
 
         # when
-        
+
         # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         G_copy = G.copy()
         save_graph(G_copy.copy(), "saved_graphs/p2_3_before.gexf")
@@ -261,7 +262,7 @@ class P2_Test(unittest.TestCase):
         # then
         self.assertEqual(G_copy.nodes, G.nodes)
         self.assertEqual(G_copy.edges, G.edges)
-    
+
     def test_if_one_egde_has_additional_node(self):
 
         level = 1
@@ -270,16 +271,20 @@ class P2_Test(unittest.TestCase):
         HIGH = 40.0
 
         nodes = [
-            (1, dict(label='E', x=LOW, y=HIGH, level=level)),
-            (2, dict(label='E', x=HIGH, y=HIGH, level=level)),
-            (4, dict(label='E', x=LOW, y=LOW, level=level)),
-            (5, dict(label='I', x=HIGH/3, y=2*HIGH/3, level=level)),
-            (7, dict(label='E', x=HIGH/2, y=HIGH/2, level=level)),
+            (1, dict(label="E", x=LOW, y=HIGH, level=level)),
+            (2, dict(label="E", x=HIGH, y=HIGH, level=level)),
+            (4, dict(label="E", x=LOW, y=LOW, level=level)),
+            (5, dict(label="I", x=HIGH / 3, y=2 * HIGH / 3, level=level)),
+            (7, dict(label="E", x=HIGH / 2, y=HIGH / 2, level=level)),
         ]
         edges = [
-            (1,2), (4,1), # boundary edges
-            (2,7), (7,4), # internal edge
-            (1,5), (2,5), (4,5), # internal I node of triangle <1,2,4>
+            (1, 2),
+            (4, 1),  # boundary edges
+            (2, 7),
+            (7, 4),  # internal edge
+            (1, 5),
+            (2, 5),
+            (4, 5),  # internal I node of triangle <1,2,4>
         ]
 
         G = nx.Graph()
@@ -288,11 +293,9 @@ class P2_Test(unittest.TestCase):
 
         G_copy = G.copy()
 
-        save_graph(G_copy, 'saved_graphs/p2_4_before.gexf')
+        save_graph(G_copy, "saved_graphs/p2_4_before.gexf")
         p2(G_copy, level)
-        save_graph(G_copy, 'saved_graphs/p2_4_after.gexf')
-
-
+        save_graph(G_copy, "saved_graphs/p2_4_after.gexf")
 
 
 class P3_Test(unittest.TestCase):

@@ -41,12 +41,12 @@ def p2(graph: nx.Graph, level: int) -> None:
             X.append(graph.nodes[node][Attribute.X])
             Y.append(graph.nodes[node][Attribute.Y])
             node_added.append(node)
-    
+
     # calulate distance between all endes from X and Y
     # and find the longest one
     distance = []
     for i in range(len(X)):
-        for j in range(i+1, len(X)):
+        for j in range(i + 1, len(X)):
             dist = ((X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2) ** 0.5
             distance.append((dist, i, j))
     distance.sort(key=lambda x: x[0], reverse=True)
@@ -58,8 +58,7 @@ def p2(graph: nx.Graph, level: int) -> None:
     X.append(new_e_x)
     Y.append(new_e_y)
 
-
-    right_side_parent_node = (parent_tmp_node_number, dict(label='i'))
+    right_side_parent_node = (parent_tmp_node_number, dict(label="i"))
     right_side_nodes_new = [
         (1, dict(label="I", x=(X[0] + X[1] + X[2]) / 3, y=(Y[0] + Y[1] + Y[2]) / 3)),
         (2, dict(label="I", x=(X[1] + X[2] + X[3]) / 3, y=(Y[1] + Y[2] + Y[3]) / 3)),
@@ -72,15 +71,28 @@ def p2(graph: nx.Graph, level: int) -> None:
     right_side_nodes = [right_side_parent_node] + right_side_nodes_new
 
     right_side_edges = [
-        (3,4), (3,6), (3,5), (3,1), (4,5), (4,6), (4,1), (4,2), (5,2), (5,6), (6,1), (6,2),
+        (3, 4),
+        (3, 6),
+        (3, 5),
+        (3, 1),
+        (4, 5),
+        (4, 6),
+        (4, 1),
+        (4, 2),
+        (5, 2),
+        (5, 6),
+        (6, 1),
+        (6, 2),
     ]
 
     try:
-        right_side_edges.remove((node_added[max_distance_i], node_added[max_distance_j]))
+        right_side_edges.remove(
+            (node_added[max_distance_i], node_added[max_distance_j])
+        )
     except:
-        right_side_edges.remove((node_added[max_distance_j], node_added[max_distance_i]))
-
-    
+        right_side_edges.remove(
+            (node_added[max_distance_j], node_added[max_distance_i])
+        )
 
     right_production_side = nx.Graph()
     right_production_side.add_nodes_from(right_side_nodes)
