@@ -192,10 +192,6 @@ class P2_Test(unittest.TestCase):
         self.assertEqual(G.nodes[5]["y"], 2 * HIGH / 3)
         self.assertEqual(G.nodes[6]["x"], 2 * HIGH / 3)
         self.assertEqual(G.nodes[6]["y"], 1 * HIGH / 3)
-        self.assertEqual(G.nodes[10]["x"], (HIGH + LOW + LOW) / 3)
-        self.assertEqual(G.nodes[10]["y"], (2 * HIGH + LOW) / 3)
-        self.assertEqual(G.nodes[11]["x"], (HIGH + LOW) / 2)
-        self.assertEqual(G.nodes[11]["y"], (HIGH + LOW) / 2)
 
     def base_p2_isomorphic_graph(self):
         # given

@@ -35,76 +35,56 @@ def p2(graph: nx.Graph, level: int) -> None:
     if not isomorphic_mapping:
         return
 
-    X = []
-    Y = []
-    node_added = []
-    for _, node in isomorphic_mapping.items():
-        if graph.nodes[node][Attribute.LABEL] == "E":
-            X.append(graph.nodes[node][Attribute.X])
-            Y.append(graph.nodes[node][Attribute.Y])
-            node_added.append(node)
+    X = [0] * 3
+    Y = [0] * 3
 
-    # calulate distance between all endes from X and Y
-    # and find the longest one
-    distance = []
+    for t_node, g_node in isomorphic_mapping.items():
+        if graph.nodes[g_node][Attribute.LABEL] == "E":
+            # E-nodes in template are indexed from 1 to 3, so shifting them down by 1 makes them legal indices
+            X[t_node - 1] = graph.nodes[g_node][Attribute.X]
+            Y[t_node - 1] = graph.nodes[g_node][Attribute.Y]
+
+    # calulate distance between all endes from X and Y and find the longest one
+    # longest_edge stores distance and indices of nodes from template graph
+    longest_edge = (-1.0, -1, -1)
     for i in range(len(X)):
         for j in range(i + 1, len(X)):
             dist = ((X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2) ** 0.5
-            distance.append((dist, i, j))
-    distance.sort(key=lambda x: x[0], reverse=True)
-    max_distance_i = distance[0][1]
-    max_distance_j = distance[0][2]
+            if dist > longest_edge[0]:
+                longest_edge = (dist, i+1, j+1)
+    
+    # position node 1 opposite to the longest edge, then this edge lies between nodes 2 and 3
+    # to achieve this, swap 1 with node that currently opposes the longest edge
+    opposite_node = 6 - longest_edge[1] - longest_edge[2]    # 1 + 2 + 3 = 6
+    isomorphic_mapping[1], isomorphic_mapping[opposite_node] = isomorphic_mapping[opposite_node], isomorphic_mapping[1]
 
-    new_e_x = (X[max_distance_i] + X[max_distance_j]) / 2
-    new_e_y = (Y[max_distance_i] + Y[max_distance_j]) / 2
-    X.append(new_e_x)
-    Y.append(new_e_y)
+    # reassign attributes after permutting keys
+    for t_node, node in isomorphic_mapping.items():
+        if graph.nodes[node][Attribute.LABEL] == "E":
+            # E-nodes in template are indexed from 1 to 3, so shifting them down by 1 makes them legal indices
+            X[t_node - 1] = graph.nodes[node][Attribute.X]
+            Y[t_node - 1] = graph.nodes[node][Attribute.Y]
+
+    # new node
+    X.append((X[1] + X[2]) / 2)
+    Y.append((Y[1] + Y[2]) / 2)
 
     right_side_parent_node = (parent_tmp_node_number, dict(label="i"))
     right_side_nodes_new = [
-        (1, dict(label="I", x=(X[0] + X[1] + X[2]) / 3, y=(Y[0] + Y[1] + Y[2]) / 3)),
-        (2, dict(label="I", x=(X[1] + X[2] + X[3]) / 3, y=(Y[1] + Y[2] + Y[3]) / 3)),
+        (1, dict(label="I", x=(X[0] + X[1] + X[3]) / 3, y=(Y[0] + Y[1] + Y[3]) / 3)),
+        (2, dict(label="I", x=(X[0] + X[2] + X[3]) / 3, y=(Y[0] + Y[2] + Y[3]) / 3)),
         (3, dict(label="E", x=X[0], y=Y[0])),
         (4, dict(label="E", x=X[1], y=Y[1])),
         (5, dict(label="E", x=X[2], y=Y[2])),
         (6, dict(label="E", x=X[3], y=Y[3])),
     ]
 
-    right_side_nodes = [right_side_parent_node] + right_side_nodes_new
-
     right_side_edges = [
-        (3, 4),
-        (3, 6),
-        (3, 5),
-        (4, 5),
-        (4, 6),
-        (5, 6),
-        (3, 1),
-        (5, 2),
-        (4, 1),
-        (4, 2),
-        (6, 1),
-        (6, 2),
+        (3, 4), (4, 6), (6, 5), (5, 3), # boundary edges
+        (3, 6),                         # internal edge to new node
+        (1, 3), (1, 4), (1, 6),         # hiperedges to I-node
+        (2, 3), (2, 5), (2, 6),         # hiperedges to I-node
     ]
-
-    if (node_added[max_distance_i], node_added[max_distance_j]) in right_side_edges:
-        # print((node_added[max_distance_i], node_added[max_distance_j]))
-        right_side_edges.remove(
-            (node_added[max_distance_i], node_added[max_distance_j])
-        )
-    elif (node_added[max_distance_j], node_added[max_distance_i]) in right_side_edges:
-        # print((node_added[max_distance_j], node_added[max_distance_i]))
-        right_side_edges.remove(
-            (node_added[max_distance_j], node_added[max_distance_i])
-        )
-
-    right_production_side = nx.Graph()
-    right_production_side.add_nodes_from(right_side_nodes)
-    right_production_side.add_edges_from(right_side_edges)
-
-    # from pprint import pprint as pp
-    # for node in right_side_nodes:
-    #     pp(node)
 
     add_to_graph(
         graph,
