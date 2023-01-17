@@ -56,7 +56,6 @@ def wywod_1():
     draw(graph, filename="./wywod_1_draw/init.png")
 
     p1(graph, 0)
-    # p1(graph, 0, LOW, HIGH)
     print("p1 done")
     draw(graph, filename="./wywod_1_draw/step_1.png")
 
@@ -72,10 +71,8 @@ def wywod_1():
     print("p12 done")
     draw(graph, filename="./wywod_1_draw/step_4.png")
 
-    # save_graph(graph, "saved_graphs/graph_1.gexf")
     p2(graph, 2)
     print("p2 done")
-    # save_graph(graph, "saved_graphs/graph_2.gexf")
     draw(graph, filename="./wywod_1_draw/step_5.png")
 
     p9(graph, 2)

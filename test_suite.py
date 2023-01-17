@@ -163,12 +163,10 @@ class P2_Test(unittest.TestCase):
         G.add_nodes_from(nodes)
         G.add_edges_from(edges)
 
-        # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         # when
         save_graph(G, "saved_graphs/p2_1_before.gexf")
         p2(G, level)
         save_graph(G, "saved_graphs/p2_1_after.gexf")
-        # save_graph(G, 'saved_graphs/graph_after.gexf.gexf')
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -249,12 +247,10 @@ class P2_Test(unittest.TestCase):
 
         # when
 
-        # save_graph(G, 'saved_graphs/graph_before.gexf.gexf')
         G_copy = G.copy()
         save_graph(G_copy.copy(), "saved_graphs/p2_3_before.gexf")
         p2(G_copy, level)
         save_graph(G_copy.copy(), "saved_graphs/p2_3_after.gexf")
-        # save_graph(G, 'saved_graphs/graph_after.gexf.gexf')
 
         # then
         self.assertEqual(G_copy.nodes, G.nodes)

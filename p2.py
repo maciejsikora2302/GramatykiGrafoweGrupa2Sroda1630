@@ -30,8 +30,6 @@ def p2(graph: nx.Graph, level: int) -> None:
         graph, left_production_side_graph, level=level
     )
 
-    # print(isomorphic_mapping)
-
     if not isomorphic_mapping:
         return
 
@@ -59,11 +57,11 @@ def p2(graph: nx.Graph, level: int) -> None:
     isomorphic_mapping[1], isomorphic_mapping[opposite_node] = isomorphic_mapping[opposite_node], isomorphic_mapping[1]
 
     # reassign attributes after permutting keys
-    for t_node, node in isomorphic_mapping.items():
-        if graph.nodes[node][Attribute.LABEL] == "E":
+    for t_node, g_node in isomorphic_mapping.items():
+        if graph.nodes[g_node][Attribute.LABEL] == "E":
             # E-nodes in template are indexed from 1 to 3, so shifting them down by 1 makes them legal indices
-            X[t_node - 1] = graph.nodes[node][Attribute.X]
-            Y[t_node - 1] = graph.nodes[node][Attribute.Y]
+            X[t_node - 1] = graph.nodes[g_node][Attribute.X]
+            Y[t_node - 1] = graph.nodes[g_node][Attribute.Y]
 
     # new node
     X.append((X[1] + X[2]) / 2)
@@ -80,10 +78,21 @@ def p2(graph: nx.Graph, level: int) -> None:
     ]
 
     right_side_edges = [
-        (3, 4), (4, 6), (6, 5), (5, 3), # boundary edges
-        (3, 6),                         # internal edge to new node
-        (1, 3), (1, 4), (1, 6),         # hiperedges to I-node
-        (2, 3), (2, 5), (2, 6),         # hiperedges to I-node
+        # boundary edges
+        (3, 4),
+        (4, 6),
+        (6, 5),
+        (5, 3),
+        # internal edge to new node
+        (3, 6),
+        # hiperedges to I-node
+        (1, 3),
+        (1, 4),
+        (1, 6),
+        # hiperedges to I-node
+        (2, 3),
+        (2, 5),
+        (2, 6),
     ]
 
     add_to_graph(
