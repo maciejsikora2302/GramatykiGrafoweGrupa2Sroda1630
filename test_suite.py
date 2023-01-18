@@ -238,7 +238,7 @@ class P2_Test(unittest.TestCase):
 
     @parameterized.expand([["1", 1], ["2", 2], ["4", 4], ["5", 5]])
     def test_should_do_nothing_when_no_isomorphic_subgraph_found(
-            self, _test_name: str, node_to_remove: int
+        self, _test_name: str, node_to_remove: int
     ):
         # given
         G = self.base_p2_isomorphic_graph()
@@ -449,7 +449,7 @@ class P3_Test(unittest.TestCase):
         ]
     )
     def test_should_do_nothing_when_isomorphic_subgraph_is_broken(
-            self, _name, removed_nodes, removed_edges, update
+        self, _name, removed_nodes, removed_edges, update
     ):
         # given
         level = 2
@@ -744,7 +744,7 @@ class P4_Test(unittest.TestCase):
         ]
     )
     def test_should_do_nothing_when_isomorphic_subgraph_is_broken(
-            self, _name, removed_nodes, removed_edges, update
+        self, _name, removed_nodes, removed_edges, update
     ):
         # given
         level = 2
@@ -1626,8 +1626,8 @@ class P10_Test(unittest.TestCase):
     def test_should_not_merge_when_label_is_wrong(self):
         G = self._idealGraph()
         for g in range(len(G.nodes())):
-            if G.nodes[g]["label"] == 'I':
-                G.nodes[g]["label"] = 'i'
+            if G.nodes[g]["label"] == "I":
+                G.nodes[g]["label"] = "i"
                 break
 
         nodes_len = len(G.nodes)
@@ -1681,8 +1681,6 @@ class P10_Test(unittest.TestCase):
 
         self.assertEqual(len(G.nodes), nodes_len - 2)
         self.assertEqual(len(G.edges), edge_len - 1)
-
-
 
 
 class P12_Test(unittest.TestCase):
