@@ -115,7 +115,6 @@ def p6_b(graph: nx.Graph, level: int) -> None:
             (1, 4),
             (2, 3),
             (3, 4),
-
             (5, 7),
             (5, 8),
             (6, 8),
