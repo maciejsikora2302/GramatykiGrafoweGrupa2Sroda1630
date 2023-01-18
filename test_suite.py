@@ -14,7 +14,7 @@ from p10 import p10
 from p12 import p12
 
 
-from general_utils import save_graph
+from general_utils import save_graph, draw
 
 
 class P1_Test(unittest.TestCase):
@@ -326,7 +326,9 @@ class P3_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when
+        draw(G, filename="test/p3/test-1-before.png")
         p3(G, level)
+        draw(G, filename="test/p3/test-1-after.png")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes))
@@ -367,7 +369,9 @@ class P3_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when
+        draw(G, filename="test/p3/test-2-before.png")
         p3(G, level)
+        draw(G, filename="test/p3/test-2-after.png")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 6)
@@ -408,7 +412,9 @@ class P3_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when-then: first-call
+        draw(G, filename="test/p3/test-3-before.png")
         p3(G, level)
+        draw(G, filename="test/p3/test-3-after.png")
 
         self.assertEqual(len(G.nodes), len(nodes) + 6)
         self.assertEqual(len(G.edges), len(edges) + 11 + 2)
@@ -507,7 +513,9 @@ class P3_Test(unittest.TestCase):
                 nx.set_node_attributes(G, attrs, "level")
 
         # when
+        draw(G, filename=f"test/p3/test-4-{_name}-before.png")
         p3(G, level)
+        draw(G, filename=f"test/p3/test-4-{_name}-after.png")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes))
@@ -558,7 +566,9 @@ class P3_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when-then (p3 ~ no changes)
+        draw(G, filename="test/p3/test-5-before.png")
         p3(G, level)
+        draw(G, filename="test/p3/test-5-after-p4.png")
 
         self.assertEqual(len(G.nodes), len(nodes))
         self.assertEqual(len(G.edges), len(edges))
@@ -567,6 +577,7 @@ class P3_Test(unittest.TestCase):
 
         # when-then (p4 ~ changes)
         p4(G, level)
+        draw(G, filename="test/p3/test-5-after-p3.png")
 
         self.assertEqual(len(G.nodes), len(nodes) + 8)
         self.assertEqual(len(G.edges), len(edges) + 16 + 3)
@@ -613,7 +624,9 @@ class P4_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when
+        draw(G, filename="test/p4/test-1-before.png")
         p4(G, level)
+        draw(G, filename="test/p4/test-1-after.png")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes))
@@ -656,7 +669,9 @@ class P4_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when
+        draw(G, filename="test/p4/test-2-before.png")
         p4(G, level)
+        draw(G, filename="test/p4/test-2-after.png")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes) + 8)
@@ -701,6 +716,7 @@ class P4_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when-then: first-call
+        draw(G, filename="test/p4/test-3-before.png")
         p4(G, level)
 
         self.assertEqual(len(G.nodes), len(nodes) + 8)
@@ -720,6 +736,7 @@ class P4_Test(unittest.TestCase):
 
         # when-then: third-call (should not change)
         p4(G, level)
+        draw(G, filename="test/p4/test-3-after.png")
 
         self.assertEqual(len(G.nodes), len(nodes) + 8 * 2)
         self.assertEqual(len(G.edges), len(edges) + (16 + 3) * 2)
@@ -804,7 +821,9 @@ class P4_Test(unittest.TestCase):
                 nx.set_node_attributes(G, attrs, "level")
 
         # when
+        draw(G, filename=f"test/p4/test-4-{_name}-before.png")
         p4(G, level)
+        draw(G, filename=f"test/p4/test-4-{_name}-after.png")
 
         # then
         self.assertEqual(len(G.nodes), len(nodes))
@@ -851,7 +870,9 @@ class P4_Test(unittest.TestCase):
         G.add_edges_from(edges)
 
         # when-then (p4 ~ no changes)
+        draw(G, filename="test/p4/test-5-before.png")
         p4(G, level)
+        draw(G, filename="test/p4/test-5-after-p3.png")
 
         self.assertEqual(len(G.nodes), len(nodes))
         self.assertEqual(len(G.edges), len(edges))
@@ -860,6 +881,7 @@ class P4_Test(unittest.TestCase):
 
         # when-then (p3 ~ changes)
         p3(G, level)
+        draw(G, filename="test/p4/test-5-after-p4.png")
 
         self.assertEqual(len(G.nodes), len(nodes) + 6)
         self.assertEqual(len(G.edges), len(edges) + 11 + 2)
