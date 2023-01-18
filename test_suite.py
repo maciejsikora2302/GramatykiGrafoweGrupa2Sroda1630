@@ -1559,8 +1559,8 @@ class P10_Test(unittest.TestCase):
             (1, dict(label="i", x=1, y=1, level=0)),
             (2, dict(label="E", x=1, y=0, level=0)),
             (3, dict(label="E", x=0, y=1, level=0)),
-            (4, dict(label="I", x=1, y=0, level=1)),
-            (5, dict(label="I", x=1, y=0, level=1)),
+            (4, dict(label="I", x=0.2, y=0, level=1)),
+            (5, dict(label="I", x=0, y=0.2, level=1)),
             (6, dict(label="I", x=1, y=1, level=1)),
             (7, dict(label="E", x=1, y=0, level=1)),
             (8, dict(label="E", x=1 / 2, y=1 / 2, level=1)),
@@ -1610,7 +1610,6 @@ class P10_Test(unittest.TestCase):
 
     def test_should_not_merge_nodes_when_isomorphic_subgraph_not_found(self):
         # given
-        level = 0
         G = self._idealGraph()
         edge = next(iter(G.edges))
         G.remove_edge(edge[0], edge[1])
@@ -1618,11 +1617,70 @@ class P10_Test(unittest.TestCase):
         edge_len = len(G.edges)
 
         # when
-        p10(G, level)
+        p10(G, 0)
 
         # then
         self.assertEqual(len(G.nodes), nodes_len)
         self.assertEqual(len(G.edges), edge_len)
+
+    def test_should_not_merge_when_label_is_wrong(self):
+        G = self._idealGraph()
+        for g in range(len(G.nodes())):
+            if G.nodes[g]["label"] == "I":
+                G.nodes[g]["label"] = "i"
+                break
+
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        p10(G, 0)
+
+        self.assertEqual(len(G.nodes), nodes_len)
+        self.assertEqual(len(G.edges), edge_len)
+
+    def test_should_merge_when_in_big_graph(self):
+        G = self._idealGraph()
+
+        nodes = [
+            (20, dict(label="i", x=20, y=0, level=0)),
+            (21, dict(label="i", x=21, y=1, level=0)),
+            (22, dict(label="E", x=21, y=0, level=0)),
+            (23, dict(label="E", x=20, y=1, level=0)),
+            (24, dict(label="I", x=21, y=0, level=1)),
+            (25, dict(label="I", x=21, y=0, level=1)),
+            (26, dict(label="I", x=21, y=1, level=1)),
+            (27, dict(label="E", x=21, y=0, level=1)),
+            (28, dict(label="E", x=21 / 2, y=1 / 2, level=1)),
+            (29, dict(label="E", x=20, y=1, level=1)),
+            (30, dict(label="E", x=20, y=1, level=1)),
+            (31, dict(label="E", x=20, y=1, level=1)),
+        ]
+
+        edges = [
+            (0, 20),
+            (1, 21),
+            (2, 22),
+            (3, 23),
+            (4, 24),
+            (5, 25),
+            (6, 26),
+            (7, 27),
+            (8, 28),
+            (9, 29),
+            (10, 30),
+            (11, 31),
+        ]
+
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+
+        nodes_len = len(G.nodes)
+        edge_len = len(G.edges)
+
+        p10(G, 0)
+
+        self.assertEqual(len(G.nodes), nodes_len - 2)
+        self.assertEqual(len(G.edges), edge_len - 1)
 
 
 class P12_Test(unittest.TestCase):
