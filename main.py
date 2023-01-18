@@ -23,11 +23,12 @@ Let's start with generating P1.
 
 
 import networkx as nx
-from pprint import pprint as pp
 from general_utils import draw, save_graph
 
 from p1 import p1
 from p2 import p2
+from p3 import p3
+from p6 import p6_b
 from p9 import p9
 from p10 import p10
 from p12 import p12
@@ -86,5 +87,50 @@ def wywod_1():
     save_graph(graph, "saved_graphs/graph.gexf")
 
 
+def wywod_3():
+    graph = nx.Graph()
+    graph.add_node(0, label="El", x=0.0, y=0.0, level=0)
+    draw(graph, filename="./wywod_3_draw/init.png")
+
+    p1(graph, 0)
+    print("p1 done")
+    draw(graph, filename="./wywod_3_draw/step_1.png")
+
+    p2(graph, 1)
+    print("p2 done")
+    draw(graph, filename="./wywod_3_draw/step_2.png")
+
+    p9(graph, 1)
+    print("p9 done")
+    draw(graph, filename="./wywod_3_draw/step_3.png")
+
+    p10(graph, 1)
+    print("p10 done")
+    draw(graph, filename="./wywod_3_draw/step_4.png")
+
+    p9(graph, 2)
+    print("p9 done")
+    draw(graph, filename="./wywod_3_draw/step_5.png")
+
+    p9(graph, 2)
+    print("p9 done")
+    draw(graph, filename="./wywod_3_draw/step_6.png")
+
+    p3(graph, 2)
+    print("p3 done")
+    draw(graph, filename="./wywod_3_draw/step_7.png")
+
+    p12(graph, 2)
+    print("p12 done")
+    draw(graph, filename="./wywod_3_draw/step_8.png")
+
+    p6_b(graph, 2)
+    print("p6_b done")
+    draw(graph, filename="./wywod_3_draw/step_9.png")
+
+    save_graph(graph, "saved_graphs/graph.gexf")
+
+
 if __name__ == "__main__":
     wywod_1()
+    wywod_3()
